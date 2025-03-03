@@ -77,7 +77,7 @@
                         </div>
                         <div class="work-facility-content">
                             <h3>free shipping</h3>
-                            <p>Around Dar Es Salaam/p>
+                            <p>Around Dar Es Salaam</p>
                         </div>
                     </div>
                     <!-- Our Facilitity Item End -->
