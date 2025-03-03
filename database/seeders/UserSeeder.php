@@ -17,7 +17,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
-
         // Create additional users if needed
         if (app()->environment('local', 'development')) {
             User::create([

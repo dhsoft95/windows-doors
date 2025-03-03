@@ -23,9 +23,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="mailto:{{ config('app.contact_email', 'info@simbadoors.co.tz') }}">
+                            <a href="mailto:{{ config('app.contact_email', 'info@simbadw.co.tz') }}">
                                 <img src="{{ asset('images/icon-mail.svg') }}" alt="Email">
-                                {{ config('app.contact_email', 'info@simbadoors.co.tz') }}
+                                {{ config('app.contact_email', 'info@simbadw.co.tz') }}
                             </a>
                         </li>
                     </ul>

@@ -50,4 +50,19 @@ class ProductController extends Controller
 
         return view('pages.products.show', compact('product'));
     }
+
+    public function featured()
+    {
+        // Get all featured products
+        $featuredProducts = Product::where('is_active', true)
+            ->where('is_featured', true)
+            ->with('category')
+            ->orderBy('sort_order')
+            ->get();
+
+        // Pass the products to the existing gallery blade file
+        return view('layouts.partials.gallery', [
+            'products' => $featuredProducts
+        ]);
+    }
 }

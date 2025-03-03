@@ -24,8 +24,8 @@
                     <!-- Hero Buttons Start -->
 
                     <div class="hero-btn wow fadeInUp" data-wow-delay="0.4s">
-                        <a href="contact.html" class="btn-default">Request Quote</a>
-                        <a href="showroom.html" class="btn-default btn-highlighted">Visit Showroom</a>
+                        <a href="mailto:sales@simbadw.co.tz" class="btn-default">Request Quote</a>
+                        <a href="/" class="btn-default btn-highlighted">Visit Showroom</a>
                     </div>
                     <!-- Hero Buttons End -->
 

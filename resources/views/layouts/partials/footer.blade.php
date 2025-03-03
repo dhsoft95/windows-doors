@@ -26,7 +26,7 @@
 
                     <!-- Schedule Now Button Start -->
                     <div class="schedule-now-btn">
-                        <a href="{{ route('contact') }}" class="schedule-btn">get a quote</a>
+                        <a href="mailto:sales@simbadw.co.tz" class="schedule-btn">get a quote</a>
                     </div>
                     <!-- Schedule Now Button End -->
                 </div>
@@ -136,7 +136,7 @@
                             <img src="{{ asset('images/icon-mail.svg') }}" alt="Email">
                         </div>
                         <div class="footer-contact-content">
-                            <p><a href="mailto:{{ config('app.contact_email', 'info@simbadoors.co.tz') }}">{{ config('app.contact_email', 'info@simbadoors.co.tz') }}</a></p>
+                            <p><a href="mailto:{{ config('app.contact_email', 'info@simbadoors.co.tz') }}">{{ config('app.contact_email', 'info@simbadw.co.tz') }}</a></p>
                         </div>
                     </div>
                     <!-- Footer Contact Item End -->
@@ -147,7 +147,7 @@
                             <img src="{{ asset('images/icon-phone.svg') }}" alt="Phone">
                         </div>
                         <div class="footer-contact-content">
-                            <p><a href="tel:{{ preg_replace('/\s+/', '', config('app.contact_phone', '+255 XXX XXX XXX')) }}">{{ config('app.contact_phone', '+255 XXX XXX XXX') }}</a></p>
+                            <p><a href="tel:{{ preg_replace('/\s+/', '', config('app.contact_phone', '+255 676 111 700')) }}">{{ config('app.contact_phone', '+255 676 111 700') }}</a></p>
                         </div>
                     </div>
                     <!-- Footer Contact Item End -->

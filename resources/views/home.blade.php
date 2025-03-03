@@ -4,7 +4,7 @@
     @include('layouts.partials.about')
     @include('layouts.partials.services')
     @include('layouts.partials.work')
-    @include('layouts.partials.gallery')
+{{--    @include('layouts.partials.gallery')--}}
     @include('layouts.partials.faq')
 {{--    @include('layouts.partials.aticles')--}}
 @endsection
