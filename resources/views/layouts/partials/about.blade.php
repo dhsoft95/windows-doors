@@ -63,7 +63,7 @@
 
                     <!-- About Us Button Start -->
                     <div class="about-us-btn wow fadeInUp" data-wow-delay="0.8s">
-                        <a href="about.html" class="btn-default">discover more</a>
+                        <a href="/products" class="btn-default">discover more</a>
                     </div>
                     <!-- About Us Button End -->
                 </div>

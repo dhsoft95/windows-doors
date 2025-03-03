@@ -40,7 +40,7 @@
                             </ul>
                         </div>
                         <div class="our-work-btn wow fadeInUp" data-wow-delay="0.6s">
-                            <a href="contact.html" class="btn-default">learn more</a>
+                            <a href="/blog" class="btn-default">learn more</a>
                         </div>
                     </div>
                     <!-- Work Content Body End -->
@@ -58,7 +58,7 @@
                         </div>
 
                         <div class="work-counter-item">
-                            <h3><span class="counter">12</span>+</h3>
+                            <h3><span class="counter">30</span>+</h3>
                             <p>years of experience</p>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                         </div>
                         <div class="work-facility-content">
                             <h3>free shipping</h3>
-                            <p>Free shipping over $100</p>
+                            <p>Around Dar Es Salaam/p>
                         </div>
                     </div>
                     <!-- Our Facilitity Item End -->
@@ -112,8 +112,8 @@
                             <img src="images/icon-work-facility-4.svg" alt="">
                         </div>
                         <div class="work-facility-content">
-                            <h3>100% money back</h3>
-                            <p>Customers money back</p>
+                            <h3>100% Guarantee</h3>
+                            <p>Customers Satisfaction</p>
                         </div>
                     </div>
                     <!-- Our Facilitity Item End -->
