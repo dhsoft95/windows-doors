@@ -11,7 +11,7 @@ class ProductFeature extends Model
 
     protected $fillable = [
         'product_id',
-        'features',
+        'feature',
         'sort_order'
     ];
 

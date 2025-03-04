@@ -139,7 +139,7 @@
                                 </h3>
 
                                 <p class="item-description">
-                                    {{ Str::limit($product->description, 120) }}
+                                    {!! Str::limit(strip_tags($product->description), 120) !!}
                                 </p>
 
                                 @if($product->average_rating)

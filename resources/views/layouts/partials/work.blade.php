@@ -80,9 +80,8 @@
                             <p>Around Dar Es Salaam</p>
                         </div>
                     </div>
-                    <!-- Our Facilitity Item End -->
 
-                    <!-- Our Facilitity Item Start -->
+                    <!-- Our Facilitity Item End -->
                     <div class="work-facility-item wow fadeInUp" data-wow-delay="0.2s">
                         <div class="icon-box">
                             <img src="images/icon-work-facility-2.svg" alt="">
