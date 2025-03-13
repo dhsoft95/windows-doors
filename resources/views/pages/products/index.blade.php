@@ -130,18 +130,15 @@
                                     </div>
                                 </a>
                             </div>
-
                             <div class="item-details">
                                 <h3 class="item-title">
                                     <a href="{{ route('products.show', $product->slug) }}">
                                         {{ $product->name }}
                                     </a>
                                 </h3>
-
                                 <p class="item-description">
                                     {!! Str::limit(strip_tags($product->description), 120) !!}
                                 </p>
-
                                 @if($product->average_rating)
                                     <div class="item-rating">
                                         <div class="stars">

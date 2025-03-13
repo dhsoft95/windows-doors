@@ -9,17 +9,13 @@
                 </div>
                 <!-- Section Title End -->
             </div>
-
             <div class="col-lg-6">
                 <!-- Section Title Content Start -->
                 <div class="section-title-content">
                     <p class="wow fadeInUp" data-wow-delay="0.2s">Discover our showcase of completed projects featuring high-quality designed doors and windows that have transformed homes and buildings across Tanzania.</p>
                 </div>
-                <!-- Section Title Content End -->
             </div>
         </div>
-
-
 
         <div class="col-lg-12">
             <!-- We Work Client Slider Start -->
@@ -27,12 +23,8 @@
                 <div class="work-company-title">
                     <h3>Our Trusted Material Suppliers</h3>
                 </div>
-
                 <!-- How We Work Company Slider Start -->
-
-                <!-- How We Work Company Slider End -->
             </div>
-            <!-- We Work Client Slider End -->
         </div>
     </div>
 </div>

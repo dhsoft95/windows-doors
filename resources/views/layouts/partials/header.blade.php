@@ -75,8 +75,8 @@
                                 ['name' => 'About', 'route' => 'about', 'children' => []],
                                 ['name' => 'Products', 'route' => null, 'children' => [
                                     ['name' => 'All', 'route' => 'products.index'],
-//                                    ['name' => 'Wood & Metal Interior Doors', 'route' => 'products.interior-doors'],
-//                                    ['name' => 'Aluminium Doors & Windows', 'route' => 'products.aluminum-solutions']
+                                    ['name' => 'Wood & Metal Interior Doors', 'route' => 'products.interior-doors'],
+                                    ['name' => 'Aluminium Doors & Windows', 'route' => 'products.aluminum-solutions']
                                 ]],
                                 ['name' => 'Articles', 'route' => null, 'children' => [
                                     ['name' => 'blog', 'route' => 'articles.index'],

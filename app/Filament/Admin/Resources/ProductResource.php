@@ -113,60 +113,60 @@ class ProductResource extends Resource
                             ])
                             ->columns(2),
 
-                        Forms\Components\Section::make('Pricing & Inventory')
-                            ->description('Set product pricing and stock information')
-                            ->icon('heroicon-o-currency-dollar')
-                            ->schema([
-                                Forms\Components\TextInput::make('price')
-                                    ->label('Regular Price')
-                                    ->required()
-                                    ->numeric()
-                                    ->prefix('$')
-                                    ->minValue(0),
-
-                                Forms\Components\TextInput::make('sale_price')
-                                    ->label('Sale Price')
-                                    ->numeric()
-                                    ->prefix('$')
-                                    ->minValue(0)
-                                    ->lte('price')
-                                    ->helperText('Leave empty if not on sale'),
-
-                                Forms\Components\TextInput::make('sku')
-                                    ->label('SKU')
-                                    ->helperText('Stock Keeping Unit')
-                                    ->unique(ignoreRecord: true),
-
-                                Forms\Components\TextInput::make('stock_quantity')
-                                    ->label('Stock Quantity')
-                                    ->numeric()
-                                    ->integer()
-                                    ->minValue(0)
-                                    ->default(1)
-                                    ->live()
-                                    ->afterStateUpdated(function (Forms\Set $set, $state) {
-                                        $set('is_in_stock', $state > 0);
-                                    }),
-
-                                Forms\Components\Toggle::make('is_in_stock')
-                                    ->label('In Stock')
-                                    ->default(true)
-                                    ->helperText('Whether the product is available for purchase')
-                                    ->live()
-                                    ->afterStateUpdated(function (Forms\Set $set, $state) {
-                                        if (!$state) {
-                                            $set('stock_quantity', 0);
-                                        } elseif ($state && $set('stock_quantity') == 0) {
-                                            $set('stock_quantity', 1);
-                                        }
-                                    }),
-
-                                Forms\Components\Toggle::make('is_taxable')
-                                    ->label('Taxable')
-                                    ->default(true)
-                                    ->helperText('Whether tax should be applied to this product'),
-                            ])
-                            ->columns(2),
+//                        Forms\Components\Section::make('Pricing & Inventory')
+//                            ->description('Set product pricing and stock information')
+//                            ->icon('heroicon-o-currency-dollar')
+//                            ->schema([
+//                                Forms\Components\TextInput::make('price')
+//                                    ->label('Regular Price')
+//                                    ->required()
+//                                    ->numeric()
+//                                    ->prefix('$')
+//                                    ->minValue(0),
+//
+//                                Forms\Components\TextInput::make('sale_price')
+//                                    ->label('Sale Price')
+//                                    ->numeric()
+//                                    ->prefix('$')
+//                                    ->minValue(0)
+//                                    ->lte('price')
+//                                    ->helperText('Leave empty if not on sale'),
+//
+//                                Forms\Components\TextInput::make('sku')
+//                                    ->label('SKU')
+//                                    ->helperText('Stock Keeping Unit')
+//                                    ->unique(ignoreRecord: true),
+//
+//                                Forms\Components\TextInput::make('stock_quantity')
+//                                    ->label('Stock Quantity')
+//                                    ->numeric()
+//                                    ->integer()
+//                                    ->minValue(0)
+//                                    ->default(1)
+//                                    ->live()
+//                                    ->afterStateUpdated(function (Forms\Set $set, $state) {
+//                                        $set('is_in_stock', $state > 0);
+//                                    }),
+//
+//                                Forms\Components\Toggle::make('is_in_stock')
+//                                    ->label('In Stock')
+//                                    ->default(true)
+//                                    ->helperText('Whether the product is available for purchase')
+//                                    ->live()
+//                                    ->afterStateUpdated(function (Forms\Set $set, $state) {
+//                                        if (!$state) {
+//                                            $set('stock_quantity', 0);
+//                                        } elseif ($state && $set('stock_quantity') == 0) {
+//                                            $set('stock_quantity', 1);
+//                                        }
+//                                    }),
+//
+//                                Forms\Components\Toggle::make('is_taxable')
+//                                    ->label('Taxable')
+//                                    ->default(true)
+//                                    ->helperText('Whether tax should be applied to this product'),
+//                            ])
+//                            ->columns(2),
 
                         Forms\Components\Section::make('Product Features')
                             ->description('List key benefits and features of the product')
@@ -189,32 +189,32 @@ class ProductResource extends Resource
                                     ->columnSpanFull(),
                             ]),
 
-                        Forms\Components\Section::make('Technical Specifications')
-                            ->description('Add detailed technical specifications')
-                            ->icon('heroicon-o-adjustments-horizontal')
-                            ->collapsible()
-                            ->schema([
-                                Forms\Components\Repeater::make('specifications')
-                                    ->relationship('specifications')
-                                    ->schema([
-                                        Forms\Components\TextInput::make('label')
-                                            ->required()
-                                            ->maxLength(255)
-                                            ->placeholder('e.g., "Weight", "Dimensions", "Material"'),
-                                        Forms\Components\TextInput::make('value')
-                                            ->required()
-                                            ->maxLength(255)
-                                            ->placeholder('e.g., "250g", "10 x 5 x 2 cm", "Aluminum"'),
-                                        Forms\Components\Hidden::make('sort_order')
-                                            ->default(fn (Forms\Get $get) => $get('../../specifications') ? count($get('../../specifications')) + 1 : 1),
-                                    ])
-                                    ->columns(2)
-                                    ->itemLabel(fn (array $state): ?string => $state['label'] ?? null)
-                                    ->addActionLabel('Add Specification')
-                                    ->reorderableWithButtons()
-                                    ->collapsible()
-                                    ->columnSpanFull(),
-                            ]),
+//                        Forms\Components\Section::make('Technical Specifications')
+//                            ->description('Add detailed technical specifications')
+//                            ->icon('heroicon-o-adjustments-horizontal')
+//                            ->collapsible()
+//                            ->schema([
+//                                Forms\Components\Repeater::make('specifications')
+//                                    ->relationship('specifications')
+//                                    ->schema([
+//                                        Forms\Components\TextInput::make('label')
+//                                            ->required()
+//                                            ->maxLength(255)
+//                                            ->placeholder('e.g., "Weight", "Dimensions", "Material"'),
+//                                        Forms\Components\TextInput::make('value')
+//                                            ->required()
+//                                            ->maxLength(255)
+//                                            ->placeholder('e.g., "250g", "10 x 5 x 2 cm", "Aluminum"'),
+//                                        Forms\Components\Hidden::make('sort_order')
+//                                            ->default(fn (Forms\Get $get) => $get('../../specifications') ? count($get('../../specifications')) + 1 : 1),
+//                                    ])
+//                                    ->columns(2)
+//                                    ->itemLabel(fn (array $state): ?string => $state['label'] ?? null)
+//                                    ->addActionLabel('Add Specification')
+//                                    ->reorderableWithButtons()
+//                                    ->collapsible()
+//                                    ->columnSpanFull(),
+//                            ]),
 
                         Forms\Components\Section::make('Related Products')
                             ->description('Suggest additional products to customers')
@@ -306,7 +306,7 @@ class ProductResource extends Resource
                                     ->maxLength(60),
                                 Forms\Components\Textarea::make('meta_description')
                                     ->helperText('For SEO purposes - max 160 characters')
-                                    ->maxLength(160),
+                                    ->maxLength(500),
                                 Forms\Components\TagsInput::make('keywords')
                                     ->helperText('Press Enter to add a keyword'),
                             ]),
