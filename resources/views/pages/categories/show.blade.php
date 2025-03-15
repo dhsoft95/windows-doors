@@ -130,12 +130,20 @@
                                                 @if($product->main_image)
                                                     <img src="{{ asset('storage/' . $product->main_image) }}"
                                                          alt="{{ $product->name }}"
-                                                         class="product-image">
+                                                         class="product-image"
+                                                         data-magnify="true"
+                                                         data-src="{{ asset('storage/' . $product->main_image) }}">
                                                 @else
                                                     <img src="{{ asset('images/placeholder.jpg') }}"
                                                          alt="{{ $product->name }}"
                                                          class="product-image">
                                                 @endif
+
+                                                <div class="product-overlay">
+                                                    <div class="overlay-content">
+                                                        <span class="overlay-icon"><i class="fas fa-search-plus"></i></span>
+                                                    </div>
+                                                </div>
 
                                                 @if($product->is_on_sale)
                                                     <div class="badge-container sale">
@@ -235,6 +243,18 @@
 
 @push('styles')
     <style>
+        /* Magnifier Glass Styles */
+        .img-magnifier-glass {
+            position: absolute;
+            border: 3px solid #deaf33;
+            border-radius: 50%;
+            cursor: none;
+            width: 150px;
+            height: 150px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
         /* Main Structure Styles */
         .page-project-single {
             padding: 80px 0;
@@ -404,7 +424,9 @@
         .product-image-container {
             position: relative;
             overflow: hidden;
-            padding-top: 75%; /* 4:3 Aspect Ratio */
+            padding-top: 80%; /* Slightly taller aspect ratio for better product visibility */
+            background-color: #f8f8f8;
+            border-radius: 10px 10px 0 0;
         }
 
         .product-image {
@@ -413,12 +435,47 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* Changed to contain for better product visibility */
             transition: transform 0.5s;
+            padding: 10px; /* Add some padding around the image */
+        }
+
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+
+        .overlay-content {
+            text-align: center;
+        }
+
+        .overlay-icon {
+            display: inline-block;
+            width: 45px;
+            height: 45px;
+            line-height: 45px;
+            background-color: #deaf33;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
         }
 
         .project-gallery-item:hover .product-image {
-            transform: scale(1.05);
+            transform: scale(1.03);
+        }
+
+        .project-gallery-item:hover .product-overlay {
+            opacity: 1;
         }
 
         .item-details {
@@ -625,9 +682,8 @@
 
 @push('scripts')
     <script>
-        // Quick view functionality can go here if needed
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize any plugins or functionality needed for your product display
+            // Initialize Quick View functionality
             const quickViewButtons = document.querySelectorAll('.quick-view');
 
             if (quickViewButtons.length > 0) {
@@ -635,10 +691,86 @@
                     button.addEventListener('click', function(e) {
                         e.preventDefault();
                         const productId = this.getAttribute('data-product-id');
-                        // Implement quick view functionality here if needed
+                        // Implement quick view functionality here
                         console.log('Quick view for product ID:', productId);
                     });
                 });
+            }
+
+            // Initialize Image Magnifier
+            initMagnifier();
+
+            // Prevent conflicts with other libraries
+            function initMagnifier() {
+                const magnifyImages = document.querySelectorAll('img[data-magnify="true"]');
+
+                if (magnifyImages.length > 0) {
+                    magnifyImages.forEach(img => {
+                        // Create magnifier glass
+                        const glass = document.createElement('div');
+                        glass.setAttribute('class', 'img-magnifier-glass');
+                        img.parentElement.appendChild(glass);
+
+                        // Set up magnifier properties
+                        glass.style.backgroundImage = "url('" + img.getAttribute('data-src') + "')";
+                        glass.style.backgroundRepeat = "no-repeat";
+                        glass.style.backgroundSize = (img.width * 3) + "px " + (img.height * 3) + "px";
+
+                        // Hide the glass initially
+                        glass.style.display = "none";
+
+                        // Add mouse events
+                        img.addEventListener('mousemove', function(e) {
+                            moveMagnifier(e, this, glass);
+                        });
+
+                        img.addEventListener('mouseenter', function() {
+                            glass.style.display = "block";
+                        });
+
+                        img.addEventListener('mouseleave', function() {
+                            glass.style.display = "none";
+                        });
+                    });
+                }
+            }
+
+            function moveMagnifier(e, img, glass) {
+                var pos, x, y;
+                // Prevent any other actions that may occur when moving over the image
+                e.preventDefault();
+
+                // Get the cursor's x and y positions:
+                pos = getCursorPos(e, img);
+                x = pos.x;
+                y = pos.y;
+
+                // Prevent the magnifier glass from being positioned outside the image
+                if (x > img.width - (glass.offsetWidth / 2)) {x = img.width - (glass.offsetWidth / 2);}
+                if (x < (glass.offsetWidth / 2)) {x = (glass.offsetWidth / 2);}
+                if (y > img.height - (glass.offsetHeight / 2)) {y = img.height - (glass.offsetHeight / 2);}
+                if (y < (glass.offsetHeight / 2)) {y = (glass.offsetHeight / 2);}
+
+                // Set the position of the magnifier glass
+                glass.style.left = (x - glass.offsetWidth / 2) + "px";
+                glass.style.top = (y - glass.offsetHeight / 2) + "px";
+
+                // Display what the magnifier glass "sees"
+                glass.style.backgroundPosition = "-" + ((x * 3) - glass.offsetWidth / 2) + "px -" + ((y * 3) - glass.offsetHeight / 2) + "px";
+            }
+
+            function getCursorPos(e, img) {
+                var a, x = 0, y = 0;
+                e = e || window.event;
+
+                // Get the x and y positions of the image
+                a = img.getBoundingClientRect();
+
+                // Calculate the cursor's x and y coordinates, relative to the image
+                x = e.pageX - a.left - window.pageXOffset;
+                y = e.pageY - a.top - window.pageYOffset;
+
+                return {x : x, y : y};
             }
         });
     </script>

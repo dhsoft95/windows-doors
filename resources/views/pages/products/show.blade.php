@@ -1,76 +1,59 @@
 @extends('layouts.app')
+
 @section('content')
     <div class="page-project-single">
         <div class="container">
-            <div class="row">
+            <div class="row g-4">
+                <!-- Sidebar Column -->
                 <div class="col-lg-4">
-                    <!-- Product Sidebar Start -->
                     <div class="project-single-sidebar">
-                        <!-- Product Details List -->
-                        <div class="product-detail-card wow fadeInUp">
-                            <div class="product-detail-header">
-                                <h3>Product Details</h3>
+                        <!-- Product Details Card -->
+                        <div class="product-detail-card mb-4">
+                            <div class="product-detail-header mb-3">
+                                <h3 class="fw-semibold">Product Details</h3>
                                 <div class="header-underline"></div>
                             </div>
 
-                            <!-- Stock Status - Simplified -->
-                            <div class="product-detail-item">
-                                <div class="icon-circle" style="background-color: #f9d56e;">
+                            <!-- Availability -->
+                            <div class="product-detail-item align-items-start">
+                                <div class="icon-circle me-3" style="background-color: #f9d56e;">
                                     <i class="fa-regular fa-clock"></i>
                                 </div>
                                 <div class="detail-content">
-                                    <h3>Availability</h3>
+                                    <h4 class="mb-1">Availability</h4>
                                     <div class="availability-tag">
-                                        <span class="{{ $product->is_in_stock ? 'available' : 'unavailable' }}">
-                                            {{ $product->is_in_stock ? 'Available' : 'Not Available' }}
-                                        </span>
+                                    <span class="{{ $product->is_in_stock ? 'available' : 'unavailable' }}">
+                                        {{ $product->is_in_stock ? 'Available' : 'Not Available' }}
+                                    </span>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Product Features -->
-                            <div class="product-detail-item">
-                                <div class="icon-circle" style="background-color: #292929;">
+                            <!-- Features -->
+                            <div class="product-detail-item align-items-start">
+                                <div class="icon-circle me-3" style="background-color: #292929;">
                                     <i class="fa-regular fa-circle-check text-white"></i>
                                 </div>
                                 <div class="detail-content">
-                                    <h3>Key Features</h3>
+                                    <h4 class="mb-2">Key Features</h4>
                                     <ul class="feature-list">
-                                        @php
-                                            $hasFeatures = false;
-                                        @endphp
-
-                                        @if($product->features && $product->features->count() > 0)
-                                            @foreach($product->features as $featureRecord)
-                                                @php
-                                                    // Use your accessor method directly without manual decoding
-                                                    $featuresArray = $featureRecord->features;
-                                                @endphp
-
-                                                @if(is_array($featuresArray) && count($featuresArray) > 0)
-                                                    @php $hasFeatures = true; @endphp
-                                                    @foreach($featuresArray as $feature)
-                                                        <li>{{ $feature }}</li>
-                                                    @endforeach
-                                                @endif
-                                            @endforeach
-                                        @endif
-
-                                        @if(!$hasFeatures)
+                                        @forelse($product->features->flatMap->features as $feature)
+                                            <li>{{ $feature }}</li>
+                                        @empty
                                             <li>No features available</li>
-                                        @endif
+                                        @endforelse
                                     </ul>
                                 </div>
                             </div>
 
                             <!-- Specifications -->
                             @if($product->specifications->count() > 0)
-                                <div class="product-detail-item">
-                                    <div class="icon-circle" style="background-color: #292929;">
+                                <div class="product-detail-item align-items-start">
+                                    <div class="icon-circle me-3" style="background-color: #292929;">
                                         <i class="fa-solid fa-list text-white"></i>
                                     </div>
                                     <div class="detail-content">
-                                        <h3>Specifications</h3>
+                                        <h4 class="mb-2">Specifications</h4>
                                         <div class="specs-grid">
                                             @foreach($product->specifications as $spec)
                                                 <div class="spec-item">
@@ -84,9 +67,9 @@
                             @endif
 
                             <!-- WhatsApp Button -->
-                            <div class="whatsapp-inquiry-btn">
+                            <div class="whatsapp-inquiry-btn mt-3">
                                 <a href="https://wa.me/255676111700?text=I'm%20interested%20in%20{{ urlencode($product->name) }}%20(SKU:%20{{ $product->sku }})"
-                                   class="btn btn-whatsapp"
+                                   class="btn btn-whatsapp w-100"
                                    target="_blank">
                                     <i class="fab fa-whatsapp"></i>
                                     Inquire via WhatsApp
@@ -94,13 +77,13 @@
                             </div>
                         </div>
 
-                        <!-- Support CTA Box -->
-                        <div class="need-help-box wow fadeInUp" data-wow-delay="0.2s">
-                            <div class="help-box-title">
-                                <h2>Need Help?</h2>
+                        <!-- Support Card -->
+                        <div class="need-help-box p-3">
+                            <div class="help-box-title mb-3">
+                                <h4 class="fw-semibold">Need Help?</h4>
                             </div>
                             <div class="help-contact-list">
-                                <div class="help-contact-item">
+                                <div class="help-contact-item mb-2">
                                     <div class="help-icon">
                                         <i class="fa-solid fa-phone"></i>
                                     </div>
@@ -121,42 +104,40 @@
                     </div>
                 </div>
 
+                <!-- Main Content Column -->
                 <div class="col-lg-8">
-                    <!-- Main Product Content -->
                     <div class="product-main-content">
-                        <!-- Main Product Image with Magnifier -->
-                        <div class="product-image-container">
+                        <!-- Main Image -->
+                        <div class="product-image-container mb-4">
                             <div class="img-magnifier-container">
-                                <figure>
-                                    <img id="mainProductImage" src="{{ asset('storage/' . $product->main_image) }}"
-                                         alt="{{ $product->name }}"
-                                         class="product-main-image img-fluid">
-                                </figure>
+                                <img id="mainProductImage"
+                                     src="{{ asset('storage/' . $product->main_image) }}"
+                                     alt="{{ $product->name }}"
+                                     class="product-main-image">
                             </div>
                         </div>
 
                         <!-- Product Description -->
-                        <div class="product-info-section">
-                            <h1 class="product-title">{{ $product->name }}</h1>
+                        <div class="product-info-section mb-5">
+                            <h1 class="product-title mb-3">{{ $product->name }}</h1>
                             <div class="product-description">
                                 {!! Purifier::clean($product->description) !!}
                             </div>
                         </div>
 
-                        <!-- Image Gallery -->
+                        <!-- Gallery -->
                         @if($product->images->count() > 0)
                             <div class="product-gallery-section">
-                                <h2 class="gallery-title">Product Gallery</h2>
-                                <div class="gallery-grid">
+                                <h3 class="gallery-title mb-3">Product Gallery</h3>
+                                <div class="gallery-grid row g-2">
                                     @foreach($product->images as $image)
-                                        <div class="gallery-item wow fadeInUp" data-wow-delay="{{ 0.1 * $loop->iteration }}s">
+                                        <div class="col-6 col-md-4 col-lg-3">
                                             <a href="{{ asset('storage/' . $image->image) }}"
+                                               class="gallery-item"
                                                data-fancybox="gallery">
-                                                <figure>
-                                                    <img src="{{ asset('storage/' . $image->image) }}"
-                                                         alt="{{ $product->name }} - Image {{ $loop->iteration }}"
-                                                         class="gallery-image">
-                                                </figure>
+                                                <img src="{{ asset('storage/' . $image->image) }}"
+                                                     alt="{{ $product->name }} - Image {{ $loop->iteration }}"
+                                                     class="gallery-image">
                                             </a>
                                         </div>
                                     @endforeach
@@ -169,7 +150,6 @@
         </div>
     </div>
 @endsection
-
 @push('styles')
     <style>
         /* Overall page styling */
@@ -387,25 +367,37 @@
             overflow: hidden;
         }
 
-        /* Product image styling with magnifier */
+        /* IMPROVED: Product image styling with magnifier */
         .product-image-container {
             margin-bottom: 30px;
-            border: 1px solid #f0f0f0;
-            border-radius: 4px;
+            border-radius: 8px;
             overflow: hidden;
+            background-color: #fff;
+            position: relative;
+            /* Increased height for bigger image */
+            height: 700px;
         }
 
         .img-magnifier-container {
             position: relative;
             overflow: hidden;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .product-main-image {
-            width: 100%;
-            height: 500px;
+            max-width: 100%;
+            max-height: 680px;
             object-fit: contain;
             transition: transform 0.3s ease;
             cursor: zoom-in;
+            /* Center the image */
+            display: block;
+            margin: 0 auto;
+            /* Added border radius to the image */
+            border-radius: 8px;
         }
 
         /* Product info styling */
@@ -452,6 +444,8 @@
             border-radius: 4px;
             overflow: hidden;
             transition: all 0.3s ease;
+            /* Fixed height for gallery items */
+            height: 180px;
         }
 
         .gallery-item:hover {
@@ -461,26 +455,38 @@
 
         .gallery-image {
             width: 100%;
-            height: 160px;
+            height: 100%;
             object-fit: contain;
             transition: transform 0.3s ease;
+            padding: 10px;
         }
 
-        /* Image magnifier glass */
+        /* IMPROVED: Image magnifier glass */
         .magnifier-glass {
-            position: absolute;
-            border: 2px solid #fff;
+            position: fixed;
+            border: 2px solid #f9d56e;
             border-radius: 50%;
             cursor: none;
-            width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
             background-repeat: no-repeat;
             display: none;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
             pointer-events: none;
+            z-index: 1000;
         }
 
         /* Responsive adjustments */
+        @media (max-width: 1199px) {
+            .product-image-container {
+                height: 600px;
+            }
+
+            .product-main-image {
+                max-height: 570px;
+            }
+        }
+
         @media (max-width: 991px) {
             .page-project-single {
                 padding: 40px 0;
@@ -490,8 +496,40 @@
                 font-size: 24px;
             }
 
+            .product-image-container {
+                height: 550px;
+            }
+
+            .product-main-image {
+                max-height: 520px;
+            }
+
             .gallery-grid {
                 grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+
+            .gallery-item {
+                height: 140px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-image-container {
+                height: 500px;
+            }
+
+            .product-main-image {
+                max-height: 470px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .product-image-container {
+                height: 450px;
+            }
+
+            .product-main-image {
+                max-height: 420px;
             }
         }
     </style>
@@ -501,51 +539,72 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize image lightbox
-            Fancybox.bind("[data-fancybox]", {
-                Thumbs: {
-                    autoStart: true,
-                    position: "bottom",
-                },
-                Toolbar: {
-                    display: [
-                        { id: "prev", position: "center" },
-                        { id: "counter", position: "center" },
-                        { id: "next", position: "center" },
-                        { id: "zoom", position: "right" },
-                        { id: "fullscreen", position: "right" },
-                        { id: "close", position: "right" },
-                    ],
-                },
-                Image: {
-                    zoom: true,
-                },
-                Carousel: {
-                    transition: "slide",
-                },
-            });
+            if (typeof Fancybox !== 'undefined') {
+                Fancybox.bind("[data-fancybox]", {
+                    Thumbs: {
+                        autoStart: true,
+                        position: "bottom",
+                    },
+                    Toolbar: {
+                        display: [
+                            { id: "prev", position: "center" },
+                            { id: "counter", position: "center" },
+                            { id: "next", position: "center" },
+                            { id: "zoom", position: "right" },
+                            { id: "fullscreen", position: "right" },
+                            { id: "close", position: "right" },
+                        ],
+                    },
+                    Image: {
+                        zoom: true,
+                    },
+                    Carousel: {
+                        transition: "slide",
+                    },
+                });
+            }
 
-            // Initialize image magnifier
+            // FIXED: Image magnifier function
             function magnify(imgID, zoom) {
                 var img, glass, w, h, bw;
                 img = document.getElementById(imgID);
 
                 if (!img) return;
 
-                // Create magnifier glass
-                glass = document.createElement("DIV");
-                glass.setAttribute("class", "magnifier-glass");
+                // Create magnifier glass if it doesn't exist already
+                glass = document.querySelector('.magnifier-glass');
 
-                // Insert magnifier glass
-                img.parentElement.insertBefore(glass, img);
+                if (!glass) {
+                    glass = document.createElement("DIV");
+                    glass.setAttribute("class", "magnifier-glass");
 
-                // Set background properties
-                glass.style.backgroundImage = "url('" + img.src + "')";
-                glass.style.backgroundSize = (img.width * zoom) + "px " + (img.height * zoom) + "px";
+                    // Insert magnifier glass
+                    img.parentElement.insertBefore(glass, img);
+                }
 
-                // Set magnifier size
-                bw = 2; // Border width
-                w = glass.offsetWidth / 2;
-                h = glass.offsetHeight / 2;
+                // Get dimensions after image is fully loaded
+                function setupMagnifier() {
+                    // Get the real dimensions of the image
+                    const imgWidth = img.naturalWidth;
+                    const imgHeight = img.naturalHeight;
+
+                    // Set background properties with the correct dimensions
+                    glass.style.backgroundImage = "url('" + img.src + "')";
+                    glass.style.backgroundSize = (imgWidth * zoom) + "px " + (imgHeight * zoom) + "px";
+
+                    // Set magnifier size
+                    bw = 3; // Border width
+                    w = glass.offsetWidth / 2;
+                    h = glass.offsetHeight / 2;
+                }
+
+                // Set up the magnifier immediately and after image loads to ensure correct dimensions
+                setupMagnifier();
+
+                // Set up again when image is fully loaded
+                if (!img.complete) {
+                    img.onload = setupMagnifier;
+                }
 
                 // Execute function when mouse moves over the image
                 img.addEventListener("mousemove", moveMagnifier);
@@ -566,23 +625,24 @@
                     // Prevent default action
                     e.preventDefault();
 
+                    // Get the bounds of the image
+                    const rect = img.getBoundingClientRect();
+
                     // Get cursor position
                     pos = getCursorPos(e);
                     x = pos.x;
                     y = pos.y;
 
-                    // Prevent magnifier from being positioned outside the image
-                    if (x > img.width - (w / zoom)) {x = img.width - (w / zoom);}
-                    if (x < w / zoom) {x = w / zoom;}
-                    if (y > img.height - (h / zoom)) {y = img.height - (h / zoom);}
-                    if (y < h / zoom) {y = h / zoom;}
+                    // Calculate magnifier position relative to cursor
+                    glass.style.left = (e.clientX - w) + "px";
+                    glass.style.top = (e.clientY - h) + "px";
 
-                    // Set position of magnifier
-                    glass.style.left = (x - w) + "px";
-                    glass.style.top = (y - h) + "px";
+                    // Calculate background position - scaling according to image natural dimensions
+                    const scaleX = img.naturalWidth / rect.width;
+                    const scaleY = img.naturalHeight / rect.height;
 
                     // Display what the magnifier "sees"
-                    glass.style.backgroundPosition = "-" + ((x * zoom) - w + bw) + "px -" + ((y * zoom) - h + bw) + "px";
+                    glass.style.backgroundPosition = "-" + ((x * scaleX * zoom) - w) + "px -" + ((y * scaleY * zoom) - h) + "px";
                 }
 
                 function getCursorPos(e) {
@@ -600,8 +660,33 @@
                 }
             }
 
-            // Call the magnify function with a zoom level of 2.5
-            magnify("mainProductImage", 2.5);
+            // Call the magnify function with a zoom level of 3 (increased from 2.5)
+            // Wait for the image to be fully loaded
+            const mainImage = document.getElementById("mainProductImage");
+
+            if (mainImage) {
+                if (mainImage.complete) {
+                    magnify("mainProductImage", 3);
+                } else {
+                    mainImage.onload = function() {
+                        magnify("mainProductImage", 3);
+                    };
+                }
+            }
+
+            // Refresh magnifier on window resize
+            window.addEventListener('resize', function() {
+                // Remove existing magnifier
+                const existingGlass = document.querySelector('.magnifier-glass');
+                if (existingGlass) {
+                    existingGlass.remove();
+                }
+
+                // Reinitialize after a short delay to let layout update
+                setTimeout(function() {
+                    magnify("mainProductImage", 3);
+                }, 100);
+            });
         });
     </script>
 @endpush
