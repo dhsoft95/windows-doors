@@ -6,7 +6,7 @@
             <div class="row mb-5">
                 <div class="col-12 text-center">
                     <h2 class="text-anime-style-3 mb-4">{{ $category->name }}</h2>
-                    <p class="text-muted fs-5 mb-0">{{ $products->total() }} products in this collection</p>
+                    <p class="text-muted fs-5 mb-0">{{ $category->description }}</p>
                     <div class="separator mx-auto mt-4"></div>
                 </div>
             </div>
