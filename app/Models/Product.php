@@ -33,7 +33,6 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'features' => 'array',
         'price' => 'decimal:2',
         'sale_price' => 'decimal:2',
         'is_in_stock' => 'boolean',
@@ -44,29 +43,32 @@ class Product extends Model
         'published_at' => 'datetime',
     ];
 
-    public function category()
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
-    public function images()
+    public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ProductImage::class);
     }
 
-
-
-    public function specifications()
+    public function specifications(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ProductSpecification::class)->orderBy('sort_order');
     }
 
-    public function tags()
+    public function features(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ProductFeature::class);
+    }
+
+    public function tags(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
-    public function relatedProducts()
+    public function relatedProducts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(
             Product::class,
@@ -74,15 +76,6 @@ class Product extends Model
             'product_id',
             'related_product_id'
         );
-    }
-    public function getFeaturesAttribute($value)
-    {
-        if (empty($value)) {
-            return [];
-        }
-
-        // Handle both array and JSON string cases
-        return is_array($value) ? $value : json_decode($value, true) ?? [];
     }
 
     // Calculate if the product is on sale
@@ -105,10 +98,5 @@ class Product extends Model
         }
 
         return round((($this->price - $this->sale_price) / $this->price) * 100);
-    }
-
-    public function features()
-    {
-        return $this->hasMany(ProductFeature::class)->orderBy('sort_order');
     }
 }

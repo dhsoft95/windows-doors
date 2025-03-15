@@ -64,3 +64,5 @@ Route::group(['prefix' => 'blog'], function () {
 });
 
 Route::get('/products/featured', [ProductController::class, 'featured'])->name('products.featured');
+Route::get('/categories', [App\Http\Controllers\CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{slug}', [App\Http\Controllers\CategoryController::class, 'show'])->name('categories.show');

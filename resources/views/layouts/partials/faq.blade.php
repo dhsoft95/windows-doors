@@ -1,11 +1,11 @@
-<div class="our-faqs">
+<div class="our-faqs" style="background-color: #1e1e1e!important;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <!-- Our Faq Image Start -->
                 <div class="our-faqs-img">
                     <figure class="image-anime reveal">
-                        <img src="images/our-faqs-img.jpg" alt="">
+                        <img src="images/our-faqs-img.png" alt="">
                     </figure>
                 </div>
                 <!-- Our Faq Image End -->
@@ -57,12 +57,14 @@
                         <div class="accordion-item wow fadeInUp" data-wow-delay="0.4s">
                             <h2 class="accordion-header" id="heading3">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                                    <span>3.</span> Do you offer customization options?
+                                    <span>3.</span>  Do you offer kitchen and interior solutions?
                                 </button>
                             </h2>
                             <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordion">
                                 <div class="accordion-body">
-                                    <p>Yes, we offer extensive customization options for both doors and windows. Our design team works closely with clients to create solutions that match their specific architectural needs and aesthetic preferences.</p>
+                                    <p>
+                                        Yes! We now provide a premium collection of kitchen and house interior solutions, including high-quality cabinetry, wardrobes, countertops, and elegant furniture. Our designs combine style and functionality to transform your space into a modern, comfortable, and aesthetically pleasing home.
+                                    </p>
                                 </div>
                             </div>
                         </div>

@@ -62,7 +62,8 @@
             <div class="container">
                 <!-- Logo Start -->
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    <img src="{{ asset('images/logo.png') }}" width="150" height="60" alt="{{ config('app.name') }} Logo">
+                    <img src="{{ asset('images/logo.png') }}" width="150" height="60"
+                         alt="{{ config('app.name') }} Logo">
                 </a>
                 <!-- Logo End -->
 
@@ -73,10 +74,9 @@
                             @foreach(config('navigation.main', [
                                 ['name' => 'Home', 'route' => 'home', 'children' => []],
                                 ['name' => 'About', 'route' => 'about', 'children' => []],
-                                ['name' => 'Products', 'route' => null, 'children' => [
-                                    ['name' => 'All', 'route' => 'products.index'],
-                                    ['name' => 'Wood & Metal Interior Doors', 'route' => 'products.interior-doors'],
-                                    ['name' => 'Aluminium Doors & Windows', 'route' => 'products.aluminum-solutions']
+                                ['name' => 'Products', 'route' => 'products.index', 'children' => [
+                                    ['name' => 'All Products', 'route' => 'products.index'],
+                                    ['name' => 'Categories', 'route' => 'categories.index']
                                 ]],
                                 ['name' => 'Articles', 'route' => null, 'children' => [
                                     ['name' => 'blog', 'route' => 'articles.index'],
@@ -88,13 +88,27 @@
 //                                ['name' => 'Show Room', 'route' => 'showroom', 'children' => []]
                             ]) as $menuItem)
                                 <li class="nav-item {{ !empty($menuItem['children']) ? 'submenu' : '' }} {{ request()->routeIs($menuItem['route'] ?? 'none') || (isset($menuItem['children']) && collect($menuItem['children'])->contains(function($child) { return request()->routeIs($child['route'] ?? 'none'); })) ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ $menuItem['route'] ? route($menuItem['route']) : '#' }}">{{ $menuItem['name'] }}</a>
+                                    <a class="nav-link"
+                                       href="{{ $menuItem['route'] ? route($menuItem['route']) : '#' }}">{{ $menuItem['name'] }}</a>
 
                                     @if(!empty($menuItem['children']))
                                         <ul>
                                             @foreach($menuItem['children'] as $child)
                                                 <li class="nav-item {{ request()->routeIs($child['route'] ?? 'none') ? 'active' : '' }}">
-                                                    <a class="nav-link" href="{{ route($child['route']) }}">{{ $child['name'] }}</a>
+                                                    <a class="nav-link"
+                                                       href="{{ route($child['route']) }}">{{ $child['name'] }}</a>
+
+                                                    @if($menuItem['name'] === 'Products' && $child['name'] === 'Categories')
+                                                        <ul>
+                                                            @foreach($categories as $category)
+                                                                <li class="nav-item">
+                                                                    <a class="nav-link" href="{{ route('categories.show', $category->slug) }}">
+                                                                        {{ $category->name }}
+                                                                    </a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    @endif
                                                 </li>
                                             @endforeach
                                         </ul>

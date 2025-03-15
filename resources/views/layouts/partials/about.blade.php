@@ -42,7 +42,7 @@
                             </div>
                             <div class="about-item-content">
                                 <h3>our mission</h3>
-                                <p>To help customers unlock their dream homes with exceptional designed doors and windows that uniquely add value and artistic beauty to their structures.</p>
+                                <p>To help customers unlock their dream homes with exceptional, high-quality finishing solutions that enhance aesthetics, functionality, and long-term value.</p>
                             </div>
                         </div>
                         <!-- About Us Item End -->
@@ -54,7 +54,7 @@
                             </div>
                             <div class="about-item-content">
                                 <h3>our vision</h3>
-                                <p>To be Tanzania's leading provider of innovative, high-quality door and window solutions, setting the standard for design excellence and customer satisfaction.</p>
+                                <p>To be East Africa's leading provider of innovative, high-quality door and window solutions, setting the standard for design excellence and customer satisfaction across the region.</p>
                             </div>
                         </div>
                         <!-- About Us Item End -->

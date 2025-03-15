@@ -150,13 +150,19 @@
                                     </div>
                                 @endif
 
-                                @if(count($product->features) > 0)
-                                    <div class="item-features">
-                                        @foreach($product->features as $feature)
-                                            <span class="feature">
-                                                <i class="fas fa-check"></i> {{ $feature }}
-                                            </span>
-                                        @endforeach
+                                @if($product->features->isNotEmpty())
+                                    <div class="product-features">
+                                        <h4 class="features-title">Features</h4>
+                                        <ul class="features-list">
+                                            @foreach($product->features as $featureModel)
+                                                @foreach($featureModel->features as $feature)
+                                                    <li class="feature-item">
+                                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                                        {{ $feature }}
+                                                    </li>
+                                                @endforeach
+                                            @endforeach
+                                        </ul>
                                     </div>
                                 @endif
 

@@ -57,6 +57,16 @@
                             <p>Pure aluminum profiles with thick safety glass for durability.</p>
                         </div>
                     </div>
+
+                    <div class="service-box-item wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="icon-box">
+                            <img src="images/icon-service-item-3.svg" alt="">
+                        </div>
+                        <div class="service-item-content">
+                            <h3>Basic Security & Fire Proof Doors</h3>
+                            <p>Basic SL doors provide durable security against break-ins and fire.</p>
+                        </div>
+                    </div>
                     <!-- Service Box Item End -->
                 </div>
                 <!-- Service Content Box End -->
@@ -79,8 +89,10 @@
                             <img src="images/icon-service-item-4.svg" alt="">
                         </div>
                         <div class="service-item-content">
-                            <h3>Custom Design Solutions</h3>
-                            <p>Personalized designs that match your unique architectural needs.</p>
+                            <h3>Balustrades</h3>
+                            <p>
+                                We specialize in providing premium balustrades (Glass, Stainless Steel and Aluminium Cast Rails)
+                            </p>
                         </div>
                     </div>
                     <!-- Service Box Item End -->
@@ -91,8 +103,9 @@
                             <img src="images/icon-service-item-5.svg" alt="">
                         </div>
                         <div class="service-item-content">
-                            <h3>Professional Installation</h3>
-                            <p>Expert installation services with attention to detail and quality.</p>
+                            <h3>Burglarproof & Safes</h3>
+                            <p>Safeguard your valuables and important documents with our burglarproof solutions and high-quality safes.
+                            </p>
                         </div>
                     </div>
                     <!-- Service Box Item End -->
@@ -103,11 +116,20 @@
                             <img src="images/icon-service-item-6.svg" alt="">
                         </div>
                         <div class="service-item-content">
-                            <h3>After-Sales Support</h3>
-                            <p>Dedicated support and maintenance services for lasting satisfaction.</p>
+                            <h3>Carports & Aluminium Pergolas</h3>
+                            <p>Protect your vehicles and outdoor spaces from the elements with our sturdy carports and aluminium pergolas.</p>
                         </div>
                     </div>
                     <!-- Service Box Item End -->
+                    <div class="service-box-item wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="icon-box">
+                            <img src="images/icon-service-item-6.svg" alt="">
+                        </div>
+                        <div class="service-item-content">
+                            <h3>Kitchen & House Interiors</h3>
+                            <p>Introducing our latest collection of high-quality Kitchen & Furniture products.</p>
+                        </div>
+                    </div>
                 </div>
                 <!-- Service Content Box End -->
             </div>

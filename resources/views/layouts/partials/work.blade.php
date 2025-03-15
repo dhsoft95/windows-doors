@@ -73,7 +73,7 @@
                     <!-- Our Facilitity Item Start -->
                     <div class="work-facility-item wow fadeInUp">
                         <div class="icon-box">
-                            <img src="images/icon-work-facility-1.svg" alt="">
+                            <i class="fas fa-truck fa-2x"></i>
                         </div>
                         <div class="work-facility-content">
                             <h3>free shipping</h3>
@@ -84,11 +84,11 @@
                     <!-- Our Facilitity Item End -->
                     <div class="work-facility-item wow fadeInUp" data-wow-delay="0.2s">
                         <div class="icon-box">
-                            <img src="images/icon-work-facility-2.svg" alt="">
+                            <i class="fas fa-headset fa-2x"></i>
                         </div>
                         <div class="work-facility-content">
-                            <h3>payment secure</h3>
-                            <p>Get 100% payment safe</p>
+                            <h3>After-Sales Support</h3>
+                            <p>Dedicated support and maintenance services for lasting satisfaction.</p>
                         </div>
                     </div>
                     <!-- Our Facilitity Item End -->
@@ -96,11 +96,11 @@
                     <!-- Our Facilitity Item Start -->
                     <div class="work-facility-item wow fadeInUp" data-wow-delay="0.4s">
                         <div class="icon-box">
-                            <img src="images/icon-work-facility-3.svg" alt="">
+                            <i class="fas fa-tools fa-2x"></i>
                         </div>
                         <div class="work-facility-content">
-                            <h3>support 24/7</h3>
-                            <p>Quality 24/7 support</p>
+                            <h3>Professional Installation</h3>
+                            <p>Expert installation services with attention to detail and quality.</p>
                         </div>
                     </div>
                     <!-- Our Facilitity Item End -->
@@ -108,7 +108,7 @@
                     <!-- Our Facilitity Item Start -->
                     <div class="work-facility-item wow fadeInUp" data-wow-delay="0.6s">
                         <div class="icon-box">
-                            <img src="images/icon-work-facility-4.svg" alt="">
+                            <i class="fas fa-shield-alt fa-2x"></i>
                         </div>
                         <div class="work-facility-content">
                             <h3>100% Guarantee</h3>

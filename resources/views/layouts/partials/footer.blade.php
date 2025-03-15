@@ -57,7 +57,7 @@
                         <div class="col-lg-6 col-md-4">
                             <!-- Footer Contact Button Start -->
                             <div class="footer-contact-btn">
-                                <a href="{{ route('showroom') }}" class="btn-default btn-highlighted">visit our showroom</a>
+                                <a href="https://www.google.com/maps?ll=-6.768344,39.261809&z=16&t=m&hl=en&gl=US&mapclient=embed&q=51+Mwai+Kibaki+Rd+Dar+es+Salaam+Tanzania" class="btn-default btn-highlighted">visit our showroom</a>
                             </div>
                             <!-- Footer Contact Button End -->
                         </div>
@@ -158,7 +158,8 @@
                             <img src="{{ asset('images/icon-location.svg') }}" alt="Location">
                         </div>
                         <div class="footer-contact-content">
-                            <p>{{ config('app.address', 'Dar es Salaam, Tanzania') }}</p>
+                            <p>Mikocheni A, 51 Mwai Kibaki Rd, <br>Dar es Salaam 1411, Tanzania
+                            </p>
                         </div>
                     </div>
                     <!-- Footer Contact Item End -->

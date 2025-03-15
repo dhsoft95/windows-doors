@@ -176,45 +176,22 @@ class ProductResource extends Resource
                                 Forms\Components\Repeater::make('features')
                                     ->relationship('features')
                                     ->schema([
-                                        Forms\Components\TextInput::make('features')  // Changed from 'feature' to 'features'
-                                        ->required()
-                                            ->maxLength(255)
-                                            ->placeholder('e.g., "Water-resistant" or "Made from recycled materials"'),
+                                        Forms\Components\TagsInput::make('features')
+                                            ->required()
+                                            ->placeholder('Add multiple features like "Water-resistant", "Eco-friendly"'),
                                         Forms\Components\Hidden::make('sort_order')
                                             ->default(fn (Forms\Get $get) => $get('../../features') ? count($get('../../features')) + 1 : 1),
                                     ])
-                                    ->itemLabel(fn (array $state): ?string => $state['features'] ?? null)  // Changed from 'feature' to 'features'
-                                    ->addActionLabel('Add Feature')
+                                    ->itemLabel(fn (array $state): ?string =>
+                                    is_array($state['features'])
+                                        ? implode(', ', array_slice($state['features'], 0, 2)) . (count($state['features']) > 2 ? '...' : '')
+                                        : $state['features'] ?? null
+                                    )
+                                    ->addActionLabel('Add Feature Group')
                                     ->reorderableWithButtons()
                                     ->columnSpanFull(),
                             ]),
 
-//                        Forms\Components\Section::make('Technical Specifications')
-//                            ->description('Add detailed technical specifications')
-//                            ->icon('heroicon-o-adjustments-horizontal')
-//                            ->collapsible()
-//                            ->schema([
-//                                Forms\Components\Repeater::make('specifications')
-//                                    ->relationship('specifications')
-//                                    ->schema([
-//                                        Forms\Components\TextInput::make('label')
-//                                            ->required()
-//                                            ->maxLength(255)
-//                                            ->placeholder('e.g., "Weight", "Dimensions", "Material"'),
-//                                        Forms\Components\TextInput::make('value')
-//                                            ->required()
-//                                            ->maxLength(255)
-//                                            ->placeholder('e.g., "250g", "10 x 5 x 2 cm", "Aluminum"'),
-//                                        Forms\Components\Hidden::make('sort_order')
-//                                            ->default(fn (Forms\Get $get) => $get('../../specifications') ? count($get('../../specifications')) + 1 : 1),
-//                                    ])
-//                                    ->columns(2)
-//                                    ->itemLabel(fn (array $state): ?string => $state['label'] ?? null)
-//                                    ->addActionLabel('Add Specification')
-//                                    ->reorderableWithButtons()
-//                                    ->collapsible()
-//                                    ->columnSpanFull(),
-//                            ]),
 
                         Forms\Components\Section::make('Related Products')
                             ->description('Suggest additional products to customers')
