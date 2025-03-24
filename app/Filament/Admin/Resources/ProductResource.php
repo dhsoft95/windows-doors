@@ -243,10 +243,9 @@ class ProductResource extends Resource
                                     ->directory('products')
                                     ->required()
                                     ->imagePreviewHeight('250')
-                                    ->imageCropAspectRatio('1:1')
                                     ->imageResizeMode('cover')
                                     ->imageEditor()
-                                    ->helperText('Square image recommended (1:1 ratio)'),
+                                    ->helperText('Rectangular image recommended (1:2 ratio)'), // Updated helper text to match the ratio
                             ]),
 
                         Forms\Components\Section::make('Tags')

@@ -9,8 +9,7 @@
                     <p class="text-muted fs-5 mb-0">{{ $category->description }}</p>
                     <div class="separator mx-auto mt-4"></div>
                 </div>
-            </div>
-
+            </div>`
             <div class="row">
                 <div class="col-lg-4">
                     <!-- Filter Sidebar -->
@@ -20,7 +19,6 @@
                             <div class="project-detail-title">
                                 <h3>Filter Options</h3>
                             </div>
-
                             <form action="{{ route('categories.show', $category->slug) }}" method="GET" class="filter-form">
                                 <!-- Sort Options -->
                                 <div class="project-detail-item">

@@ -1,692 +1,390 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="page-project-single">
+    <div class="page-product-detail">
         <div class="container">
-            <div class="row g-4">
-                <!-- Sidebar Column -->
-                <div class="col-lg-4">
-                    <div class="project-single-sidebar">
-                        <!-- Product Details Card -->
-                        <div class="product-detail-card mb-4">
-                            <div class="product-detail-header mb-3">
-                                <h3 class="fw-semibold">Product Details</h3>
-                                <div class="header-underline"></div>
-                            </div>
-
-                            <!-- Availability -->
-                            <div class="product-detail-item align-items-start">
-                                <div class="icon-circle me-3" style="background-color: #f9d56e;">
-                                    <i class="fa-regular fa-clock"></i>
+            <!-- Main Product Section -->
+            <div class="product-main-section">
+                <div class="row">
+                    <!-- Feature Icons Column -->
+                    <div class="col-md-2 col-sm-12">
+                        <div class="feature-icons-container">
+                            <div class="feature-icon-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-certificate"></i>
                                 </div>
-                                <div class="detail-content">
-                                    <h4 class="mb-1">Availability</h4>
-                                    <div class="availability-tag">
-                                    <span class="{{ $product->is_in_stock ? 'available' : 'unavailable' }}">
-                                        {{ $product->is_in_stock ? 'Available' : 'Not Available' }}
-                                    </span>
-                                    </div>
+                                <div class="feature-label">
+                                    Israel/European<br>standard
                                 </div>
                             </div>
 
-                            <!-- Features -->
-                            <div class="product-detail-item align-items-start">
-                                <div class="icon-circle me-3" style="background-color: #292929;">
-                                    <i class="fa-regular fa-circle-check text-white"></i>
+                            <div class="feature-icon-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-lock"></i>
                                 </div>
-                                <div class="detail-content">
-                                    <h4 class="mb-2">Key Features</h4>
-                                    <ul class="feature-list">
-                                        @forelse($product->features->flatMap->features as $feature)
-                                            <li>{{ $feature }}</li>
-                                        @empty
-                                            <li>No features available</li>
-                                        @endforelse
-                                    </ul>
+                                <div class="feature-label">
+                                    Self-destruct<br>mechanism
                                 </div>
                             </div>
 
-                            <!-- Specifications -->
+                            <div class="feature-icon-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-volume-off"></i>
+                                </div>
+                                <div class="feature-label">
+                                    Thermal<br>and acoustic<br>insulation
+                                </div>
+                            </div>
+
+                            <div class="feature-icon-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="feature-label">
+                                    Strong<br>resistant door
+                                </div>
+                            </div>
+
+                            <div class="feature-icon-item">
+                                <div class="feature-icon">
+                                    <span class="depth-number">25</span>
+                                </div>
+                                <div class="feature-label">
+                                    High safety lock<br>25mm depth
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Product Image -->
+                    <div class="col-md-5 col-sm-12">
+                        <div class="product-image-main">
+                            <img src="{{ asset('storage/' . $product->main_image) }}"
+                                 alt="{{ $product->name }}"
+                                 class="img-fluid">
+                        </div>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="col-md-5 col-sm-12">
+                        <div class="product-info-container">
+                            <h1 class="product-model-title">
+                                {{ $product->model_number ?? 'SL 7050' }} – {{ $product->style_code ?? 'WINDOW ' . $product->id }}
+                            </h1>
+
+                            <div class="product-description mt-4">
+                                {!! Purifier::clean($product->description) !!}
+                            </div>
+
+                            <!-- Product Specifications -->
                             @if($product->specifications->count() > 0)
-                                <div class="product-detail-item align-items-start">
-                                    <div class="icon-circle me-3" style="background-color: #292929;">
-                                        <i class="fa-solid fa-list text-white"></i>
-                                    </div>
-                                    <div class="detail-content">
-                                        <h4 class="mb-2">Specifications</h4>
-                                        <div class="specs-grid">
-                                            @foreach($product->specifications as $spec)
-                                                <div class="spec-item">
-                                                    <span class="spec-label">{{ $spec->label }}:</span>
-                                                    <span class="spec-value">{{ $spec->value }}</span>
-                                                </div>
-                                            @endforeach
-                                        </div>
+                                <div class="product-specs mt-4">
+                                    <h3 class="specs-title">Specifications</h3>
+                                    <div class="specs-list">
+                                        @foreach($product->specifications as $spec)
+                                            <div class="spec-item">
+                                                <span class="spec-label">{{ $spec->label }}:</span>
+                                                <span class="spec-value">{{ $spec->value }}</span>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             @endif
 
-                            <!-- WhatsApp Button -->
-                            <div class="whatsapp-inquiry-btn mt-3">
-                                <a href="https://wa.me/255676111700?text=I'm%20interested%20in%20{{ urlencode($product->name) }}%20(SKU:%20{{ $product->sku }})"
-                                   class="btn btn-whatsapp w-100"
-                                   target="_blank">
-                                    <i class="fab fa-whatsapp"></i>
-                                    Inquire via WhatsApp
-                                </a>
-                            </div>
-                        </div>
+                            <!-- Product Features -->
+                            @if($product->features->count() > 0)
+                                <div class="product-features mt-4">
+                                    <h3 class="features-title">Features</h3>
+                                    <ul class="features-list">
+                                        @foreach($product->features->flatMap->features as $feature)
+                                            <li>{{ $feature }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
-                        <!-- Support Card -->
-                        <div class="need-help-box p-3">
-                            <div class="help-box-title mb-3">
-                                <h4 class="fw-semibold">Need Help?</h4>
-                            </div>
-                            <div class="help-contact-list">
-                                <div class="help-contact-item mb-2">
-                                    <div class="help-icon">
-                                        <i class="fa-solid fa-phone"></i>
-                                    </div>
-                                    <div class="help-contact-content">
-                                        <p>+255 676111700</p>
-                                    </div>
-                                </div>
-                                <div class="help-contact-item">
-                                    <div class="help-icon">
-                                        <i class="fa-solid fa-envelope"></i>
-                                    </div>
-                                    <div class="help-contact-content">
-                                        <p>info@simbadw.co.tz</p>
-                                    </div>
-                                </div>
+                            <!-- Contact Button -->
+                            <div class="contact-section mt-5">
+                                <a href="{{ route('contact') }}" class="btn btn-primary btn-contact">
+                                    Contact for Inquiry
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Main Content Column -->
-                <div class="col-lg-8">
-                    <div class="product-main-content">
-                        <!-- Main Image -->
-                        <div class="product-image-container mb-4">
-                            <div class="img-magnifier-container">
-                                <img id="mainProductImage"
-                                     src="{{ asset('storage/' . $product->main_image) }}"
-                                     alt="{{ $product->name }}"
-                                     class="product-main-image">
+            <!-- Similar Products Section -->
+            <div class="similar-products-section mt-5 pt-5">
+                <h2 class="section-title text-center mb-5">SIMILAR PRODUCTS</h2>
+
+                <div class="row">
+                    @if($product->relatedProducts->count() > 0)
+                        @foreach($product->relatedProducts as $relatedProduct)
+                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                                <a href="{{ route('products.show', $relatedProduct->slug) }}" class="similar-product-item">
+                                    <div class="product-image">
+                                        <img src="{{ asset('storage/' . $relatedProduct->main_image) }}"
+                                             alt="{{ $relatedProduct->name }}"
+                                             class="img-fluid">
+                                    </div>
+                                    <div class="product-title text-center mt-3">
+                                        {{ $relatedProduct->model_number ?? 'SL 7050' }} – {{ $relatedProduct->style_code ?? 'WINDOW ' . $relatedProduct->id }}
+                                    </div>
+                                </a>
                             </div>
+                        @endforeach
+                    @else
+                        <div class="col-12 text-center">
+                            <p>No similar products found.</p>
                         </div>
-
-                        <!-- Product Description -->
-                        <div class="product-info-section mb-5">
-                            <h1 class="product-title mb-3">{{ $product->name }}</h1>
-                            <div class="product-description">
-                                {!! Purifier::clean($product->description) !!}
-                            </div>
-                        </div>
-
-                        <!-- Gallery -->
-                        @if($product->images->count() > 0)
-                            <div class="product-gallery-section">
-                                <h3 class="gallery-title mb-3">Product Gallery</h3>
-                                <div class="gallery-grid row g-2">
-                                    @foreach($product->images as $image)
-                                        <div class="col-6 col-md-4 col-lg-3">
-                                            <a href="{{ asset('storage/' . $image->image) }}"
-                                               class="gallery-item"
-                                               data-fancybox="gallery">
-                                                <img src="{{ asset('storage/' . $image->image) }}"
-                                                     alt="{{ $product->name }} - Image {{ $loop->iteration }}"
-                                                     class="gallery-image">
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
 @push('styles')
     <style>
-        /* Overall page styling */
-        .page-project-single {
+        /* Page Container */
+        .page-product-detail {
             padding: 60px 0;
             background-color: #fff;
         }
 
-        /* Product sidebar styling */
-        .project-single-sidebar {
-            margin-bottom: 30px;
+        /* Main Product Section */
+        .product-main-section {
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e1e1e1;
         }
 
-        .product-detail-card {
-            border: 1px solid #e6e6e6;
-            border-radius: 4px;
-            padding: 25px;
-            background-color: #fff;
-            margin-bottom: 30px;
+        /* Feature Icons */
+        .feature-icons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .product-detail-header {
-            margin-bottom: 30px;
+        .feature-icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
-        .product-detail-header h3 {
-            color: #f9d56e;
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .header-underline {
-            width: 50px;
-            height: 3px;
-            background-color: #f9d56e;
-            margin-bottom: 20px;
-        }
-
-        /* Icon styling */
-        .icon-circle {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            margin-right: 15px;
-        }
-
-        .icon-circle i {
-            font-size: 20px;
-        }
-
-        /* Detail item styling */
-        .product-detail-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .product-detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .detail-content h3 {
-            font-size: 18px;
-            margin-bottom: 12px;
-            font-weight: 500;
-        }
-
-        /* Availability styling */
-        .availability-tag {
-            display: inline-block;
-        }
-
-        .availability-tag span {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .availability-tag span.available {
-            background-color: #e9f9e7;
-            color: #333;
-            border: 1px solid #d4ead1;
-        }
-
-        .availability-tag span.unavailable {
-            background-color: #ffeeee;
-            color: #333;
-            border: 1px solid #f5d5d5;
-        }
-
-        /* Feature list styling */
-        .feature-list {
-            padding-left: 0;
-            list-style-type: none;
-            margin-bottom: 0;
-        }
-
-        .feature-list li {
-            position: relative;
-            padding-left: 20px;
             margin-bottom: 10px;
-            line-height: 1.5;
+            background-color: #fff;
         }
 
-        .feature-list li:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #333;
+        .feature-icon i {
+            font-size: 32px;
+            color: #1e1e1e;
         }
 
-        /* Specifications styling */
-        .specs-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
+        .depth-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1e1e1e;
+        }
+
+        .depth-number {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .feature-label {
+            font-size: 12px;
+            line-height: 1.3;
+            color: #555;
+        }
+
+        /* Main Product Image */
+        .product-image-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            padding: 20px;
+            height: 100%;
+        }
+
+        .product-image-main img {
+            max-height: 600px;
+            object-fit: contain;
+        }
+
+        /* Product Info */
+        .product-info-container {
+            padding: 20px 0;
+        }
+
+        .product-model-title {
+            font-size: 35px;
+            font-weight: 600;
+            color: #1e1e1e;
+            margin-bottom: 30px;
+        }
+
+        .product-description {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Specifications */
+        .specs-title, .features-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #1e1e1e;
+        }
+
+        .specs-list {
+            border-top: 1px solid #eee;
         }
 
         .spec-item {
             display: flex;
-            flex-wrap: wrap;
-            padding: 8px 0;
-            border-bottom: 1px dashed #f0f0f0;
-        }
-
-        .spec-item:last-child {
-            border-bottom: none;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
         }
 
         .spec-label {
+            width: 40%;
             font-weight: 500;
-            margin-right: 8px;
-            color: #333;
-        }
-
-        /* WhatsApp button */
-        .whatsapp-inquiry-btn {
-            margin-top: 20px;
-        }
-
-        .btn-whatsapp {
-            background-color: #25d366;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 4px;
-            font-weight: 500;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .btn-whatsapp:hover {
-            background-color: #1fb855;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .btn-whatsapp i {
-            font-size: 20px;
-            margin-right: 10px;
-        }
-
-        /* Need Help box styling */
-        .need-help-box {
-            background-color: #f8f8f8;
-            padding: 25px;
-            border-radius: 4px;
-        }
-
-        .help-box-title h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .help-contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .help-icon {
-            width: 36px;
-            height: 36px;
-            background-color: #f0f0f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-
-        .help-contact-content p {
-            margin-bottom: 0;
-            font-size: 15px;
-        }
-
-        /* Main product content styling */
-        .product-main-content {
-            background-color: #fff;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        /* IMPROVED: Product image styling with magnifier */
-        .product-image-container {
-            margin-bottom: 30px;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #fff;
-            position: relative;
-            /* Increased height for bigger image */
-            height: 700px;
-        }
-
-        .img-magnifier-container {
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .product-main-image {
-            max-width: 100%;
-            max-height: 680px;
-            object-fit: contain;
-            transition: transform 0.3s ease;
-            cursor: zoom-in;
-            /* Center the image */
-            display: block;
-            margin: 0 auto;
-            /* Added border radius to the image */
-            border-radius: 8px;
-        }
-
-        /* Product info styling */
-        .product-info-section {
-            padding: 0 0 30px 0;
-        }
-
-        .product-title {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .product-description {
             color: #555;
-            line-height: 1.6;
         }
 
-        .product-description p {
-            margin-bottom: 15px;
+        .spec-value {
+            width: 60%;
+            color: #1e1e1e;
         }
 
-        /* Gallery styling */
-        .product-gallery-section {
-            margin-top: 20px;
-            padding-bottom: 30px;
+        /* Features List */
+        .features-list {
+            padding-left: 20px;
         }
 
-        .gallery-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            font-weight: 600;
+        .features-list li {
+            margin-bottom: 8px;
+            color: #555;
         }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
-        }
-
-        .gallery-item {
-            border: 1px solid #f0f0f0;
-            border-radius: 4px;
-            overflow: hidden;
+        /* Contact Button */
+        .btn-contact {
+            background-color: #deaf33;
+            border: none;
+            padding: 12px 30px;
+            font-weight: 500;
+            font-size: 16px;
             transition: all 0.3s ease;
-            /* Fixed height for gallery items */
-            height: 180px;
+            color: #1e1e1e;
         }
 
-        .gallery-item:hover {
+        .btn-contact:hover {
+            background-color: #c79b23;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            color: #1e1e1e;
         }
 
-        .gallery-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: transform 0.3s ease;
+        /* Similar Products Section */
+        .section-title {
+            font-size: 30px;
+            font-weight: 600;
+            color: #1e1e1e;
+            position: relative;
+        }
+
+        .similar-product-item {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .similar-product-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .similar-product-item .product-image {
+            border: 1px solid #eee;
             padding: 10px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
         }
 
-        /* IMPROVED: Image magnifier glass */
-        .magnifier-glass {
-            position: fixed;
-            border: 2px solid #f9d56e;
-            border-radius: 50%;
-            cursor: none;
-            width: 200px;
-            height: 200px;
-            background-repeat: no-repeat;
-            display: none;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
-            pointer-events: none;
-            z-index: 1000;
+        .similar-product-item .product-image img {
+            max-height: 280px;
+            object-fit: contain;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 1199px) {
-            .product-image-container {
-                height: 600px;
-            }
-
-            .product-main-image {
-                max-height: 570px;
-            }
+        .similar-product-item .product-title {
+            font-size: 15px;
+            color: #1e1e1e;
+            margin-top: 10px;
+            font-weight: 500;
         }
 
+        /* Responsive Adjustments */
         @media (max-width: 991px) {
-            .page-project-single {
-                padding: 40px 0;
+            .feature-icons-container {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-bottom: 30px;
             }
 
-            .product-title {
+            .feature-icon-item {
+                margin: 0 10px 20px;
+            }
+
+            .product-image-main {
+                margin-bottom: 30px;
+            }
+
+            .product-model-title {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .page-product-detail {
+                padding: 30px 0;
+            }
+
+            .feature-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .feature-icon img {
+                max-width: 35px;
+                max-height: 35px;
+            }
+
+            .depth-number {
                 font-size: 24px;
             }
 
-            .product-image-container {
-                height: 550px;
+            .feature-label {
+                font-size: 10px;
             }
 
-            .product-main-image {
-                max-height: 520px;
-            }
-
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            }
-
-            .gallery-item {
-                height: 140px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .product-image-container {
-                height: 500px;
-            }
-
-            .product-main-image {
-                max-height: 470px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .product-image-container {
-                height: 450px;
-            }
-
-            .product-main-image {
-                max-height: 420px;
+            .similar-product-item .product-image {
+                height: 220px;
             }
         }
     </style>
-@endpush
-
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize image lightbox
-            if (typeof Fancybox !== 'undefined') {
-                Fancybox.bind("[data-fancybox]", {
-                    Thumbs: {
-                        autoStart: true,
-                        position: "bottom",
-                    },
-                    Toolbar: {
-                        display: [
-                            { id: "prev", position: "center" },
-                            { id: "counter", position: "center" },
-                            { id: "next", position: "center" },
-                            { id: "zoom", position: "right" },
-                            { id: "fullscreen", position: "right" },
-                            { id: "close", position: "right" },
-                        ],
-                    },
-                    Image: {
-                        zoom: true,
-                    },
-                    Carousel: {
-                        transition: "slide",
-                    },
-                });
-            }
-
-            // FIXED: Image magnifier function
-            function magnify(imgID, zoom) {
-                var img, glass, w, h, bw;
-                img = document.getElementById(imgID);
-
-                if (!img) return;
-
-                // Create magnifier glass if it doesn't exist already
-                glass = document.querySelector('.magnifier-glass');
-
-                if (!glass) {
-                    glass = document.createElement("DIV");
-                    glass.setAttribute("class", "magnifier-glass");
-
-                    // Insert magnifier glass
-                    img.parentElement.insertBefore(glass, img);
-                }
-
-                // Get dimensions after image is fully loaded
-                function setupMagnifier() {
-                    // Get the real dimensions of the image
-                    const imgWidth = img.naturalWidth;
-                    const imgHeight = img.naturalHeight;
-
-                    // Set background properties with the correct dimensions
-                    glass.style.backgroundImage = "url('" + img.src + "')";
-                    glass.style.backgroundSize = (imgWidth * zoom) + "px " + (imgHeight * zoom) + "px";
-
-                    // Set magnifier size
-                    bw = 3; // Border width
-                    w = glass.offsetWidth / 2;
-                    h = glass.offsetHeight / 2;
-                }
-
-                // Set up the magnifier immediately and after image loads to ensure correct dimensions
-                setupMagnifier();
-
-                // Set up again when image is fully loaded
-                if (!img.complete) {
-                    img.onload = setupMagnifier;
-                }
-
-                // Execute function when mouse moves over the image
-                img.addEventListener("mousemove", moveMagnifier);
-                glass.addEventListener("mousemove", moveMagnifier);
-
-                // Show glass on mouseenter
-                img.addEventListener("mouseenter", function() {
-                    glass.style.display = "block";
-                });
-
-                // Hide glass on mouseleave
-                img.addEventListener("mouseleave", function() {
-                    glass.style.display = "none";
-                });
-
-                function moveMagnifier(e) {
-                    var pos, x, y;
-                    // Prevent default action
-                    e.preventDefault();
-
-                    // Get the bounds of the image
-                    const rect = img.getBoundingClientRect();
-
-                    // Get cursor position
-                    pos = getCursorPos(e);
-                    x = pos.x;
-                    y = pos.y;
-
-                    // Calculate magnifier position relative to cursor
-                    glass.style.left = (e.clientX - w) + "px";
-                    glass.style.top = (e.clientY - h) + "px";
-
-                    // Calculate background position - scaling according to image natural dimensions
-                    const scaleX = img.naturalWidth / rect.width;
-                    const scaleY = img.naturalHeight / rect.height;
-
-                    // Display what the magnifier "sees"
-                    glass.style.backgroundPosition = "-" + ((x * scaleX * zoom) - w) + "px -" + ((y * scaleY * zoom) - h) + "px";
-                }
-
-                function getCursorPos(e) {
-                    var a, x = 0, y = 0;
-                    e = e || window.event;
-
-                    // Get image position
-                    a = img.getBoundingClientRect();
-
-                    // Calculate cursor position relative to the image
-                    x = e.pageX - a.left - window.pageXOffset;
-                    y = e.pageY - a.top - window.pageYOffset;
-
-                    return {x : x, y : y};
-                }
-            }
-
-            // Call the magnify function with a zoom level of 3 (increased from 2.5)
-            // Wait for the image to be fully loaded
-            const mainImage = document.getElementById("mainProductImage");
-
-            if (mainImage) {
-                if (mainImage.complete) {
-                    magnify("mainProductImage", 3);
-                } else {
-                    mainImage.onload = function() {
-                        magnify("mainProductImage", 3);
-                    };
-                }
-            }
-
-            // Refresh magnifier on window resize
-            window.addEventListener('resize', function() {
-                // Remove existing magnifier
-                const existingGlass = document.querySelector('.magnifier-glass');
-                if (existingGlass) {
-                    existingGlass.remove();
-                }
-
-                // Reinitialize after a short delay to let layout update
-                setTimeout(function() {
-                    magnify("mainProductImage", 3);
-                }, 100);
-            });
-        });
-    </script>
 @endpush
