@@ -42,8 +42,10 @@ class CategoryController extends Controller
         // Pagination
         $products = $query->paginate(9);
 
-        // Get all categories for the filter dropdown
-        $categories = ProductCategory::where('is_active', true)->get();
+        // Get all categories for the filter dropdown, sorted by created_at
+        $categories = ProductCategory::where('is_active', true)
+            ->orderBy('created_at')  // Sort by creation date (newest first)
+            ->get();
 
         return view('pages.categories.show', [
             'category' => $category,
@@ -64,7 +66,7 @@ class CategoryController extends Controller
             ->withCount(['products' => function($query) {
                 $query->where('is_active', true);
             }])
-            ->orderBy('name')
+            ->orderBy('created_at')
             ->get();
 
         return view('pages.categories.index', compact('categories'));
