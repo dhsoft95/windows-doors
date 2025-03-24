@@ -76,6 +76,7 @@
                                 {!! Purifier::clean($product->description) !!}
                             </div>
 
+
                             <!-- Product Specifications -->
                             @if($product->specifications->count() > 0)
                                 <div class="product-specs mt-4">
