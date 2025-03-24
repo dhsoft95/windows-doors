@@ -75,9 +75,23 @@ class ProductCategoryResource extends Resource
                                     ->maxLength(255)
                                     ->helperText('Used for the category URL. Auto-generated from name.'),
 
-                                Forms\Components\Textarea::make('description')
-                                    ->rows(3)
-                                    ->helperText('Brief description of the category (optional)')
+                                Forms\Components\RichEditor::make('description')
+                                    ->required()
+                                    ->fileAttachmentsDisk('public')
+                                    ->fileAttachmentsDirectory('products/attachments')
+                                    ->toolbarButtons([
+                                        'blockquote',
+                                        'bold',
+                                        'bulletList',
+                                        'h2',
+                                        'h3',
+                                        'italic',
+                                        'link',
+                                        'orderedList',
+                                        'redo',
+                                        'strike',
+                                        'undo',
+                                    ])
                                     ->columnSpanFull(),
 
                                 Forms\Components\FileUpload::make('image')
