@@ -25,7 +25,7 @@
 
                     <div class="hero-btn wow fadeInUp" data-wow-delay="0.4s">
                         <a href="mailto:sales@simbadw.co.tz" class="btn-default">Request Quote</a>
-                        <a href="/" class="btn-default btn-highlighted">Visit Showroom</a>
+                        <a href="https://www.google.com/maps?ll=-6.768344,39.261809&z=16&t=m&hl=en&gl=US&mapclient=embed&q=51+Mwai+Kibaki+Rd+Dar+es+Salaam+Tanzania" class="btn-default btn-highlighted">Visit Showroom</a>
                     </div>
                     <!-- Hero Buttons End -->
 

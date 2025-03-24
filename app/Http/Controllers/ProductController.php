@@ -27,7 +27,7 @@ class ProductController extends Controller
                 $query->orderBy('price', 'desc');
                 break;
             default:
-                $query->orderBy('sort_order');
+                $query->orderBy('created_at', 'desc'); // Fetch from new to old
         }
 
         // Pagination
@@ -41,6 +41,7 @@ class ProductController extends Controller
             'categories' => $categories
         ]);
     }
+
 
     public function show($slug)
     {

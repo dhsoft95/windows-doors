@@ -187,18 +187,13 @@
 
         .feature-icon i {
             font-size: 32px;
-            color: #1e1e1e;
+            color: #deaf33;
         }
 
         .depth-number {
             font-size: 32px;
             font-weight: bold;
-            color: #1e1e1e;
-        }
-
-        .depth-number {
-            font-size: 30px;
-            font-weight: bold;
+            color: #deaf33;
         }
 
         .feature-label {
@@ -209,17 +204,21 @@
 
         /* Main Product Image */
         .product-image-main {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             background-color: #fff;
-            padding: 20px;
-            height: 100%;
+            padding: 0;
+            height: auto;
+            min-height: 400px;
         }
 
         .product-image-main img {
+            max-width: 100%;
             max-height: 600px;
             object-fit: contain;
+            display: block;
         }
 
         /* Product Info */
@@ -316,17 +315,20 @@
         }
 
         .similar-product-item .product-image {
+            position: relative;
             border: 1px solid #eee;
-            padding: 10px;
             background: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 300px;
+            padding: 10px;
+            overflow: hidden;
         }
 
         .similar-product-item .product-image img {
-            max-height: 280px;
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
         }
 
@@ -369,9 +371,8 @@
                 height: 60px;
             }
 
-            .feature-icon img {
-                max-width: 35px;
-                max-height: 35px;
+            .feature-icon i {
+                font-size: 24px;
             }
 
             .depth-number {

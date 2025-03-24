@@ -158,7 +158,7 @@
                             <img src="{{ asset('images/icon-location.svg') }}" alt="Location">
                         </div>
                         <div class="footer-contact-content">
-                            <p>Mikocheni A, 51 Mwai Kibaki Rd, <br>Dar es Salaam 1411, Tanzania
+                            <p><a href="https://www.google.com/maps?ll=-6.768344,39.261809&z=16&t=m&hl=en&gl=US&mapclient=embed&q=51+Mwai+Kibaki+Rd+Dar+es+Salaam+Tanzania">Mikocheni A, 51 Mwai Kibaki Rd, <br>Dar es Salaam 1411, Tanzania</a>
                             </p>
                         </div>
                     </div>
