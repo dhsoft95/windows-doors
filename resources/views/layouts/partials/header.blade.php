@@ -80,8 +80,8 @@
                                 ]],
                                 ['name' => 'Articles', 'route' => null, 'children' => [
                                     ['name' => 'blog', 'route' => 'articles.index'],
-//                                    ['name' => 'News', 'route' => 'articles.news'],
-//                                    ['name' => 'Installation Guides', 'route' => 'articles.guides']
+//                                  ['name' => 'News', 'route' => 'articles.news'],
+//                                  ['name' => 'Installation Guides', 'route' => 'articles.guides']
                                 ]],
                                 ['name' => 'Catalogue', 'route' => 'catalogue', 'children' => []],
 //                                ['name' => 'Help & Support', 'route' => 'support', 'children' => []],

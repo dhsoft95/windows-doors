@@ -1,113 +1,112 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="page-product-detail">
-        <div class="container">
-            <!-- Main Product Section -->
-            <div class="product-main-section">
-                <div class="row">
+    <div class="product-detail-page">
+        <div class="container-lg">
+            <!-- Main Product Block -->
+            <div class="product-main-block">
+                <div class="row g-4">
                     <!-- Feature Icons Column -->
-                    <div class="col-md-2 col-sm-12">
-                        <div class="feature-icons-container">
-                            <div class="feature-icon-item">
-                                <div class="feature-icon">
+                    <div class="col-lg-2 col-md-3 order-md-1">
+                        <div class="feature-icons-sidebar">
+                            <div class="feature-card">
+                                <div class="icon-wrapper">
                                     <i class="fas fa-certificate"></i>
                                 </div>
-                                <div class="feature-label">
-                                    Israel/European<br>standard
-                                </div>
+                                <span class="feature-text">Israel/European<br>standard</span>
                             </div>
 
-                            <div class="feature-icon-item">
-                                <div class="feature-icon">
+                            <div class="feature-card">
+                                <div class="icon-wrapper">
                                     <i class="fas fa-lock"></i>
                                 </div>
-                                <div class="feature-label">
-                                    Self-destruct<br>mechanism
-                                </div>
+                                <span class="feature-text">Self-destruct<br>mechanism</span>
                             </div>
 
-                            <div class="feature-icon-item">
-                                <div class="feature-icon">
+                            <div class="feature-card">
+                                <div class="icon-wrapper">
                                     <i class="fas fa-volume-off"></i>
                                 </div>
-                                <div class="feature-label">
-                                    Thermal<br>and acoustic<br>insulation
-                                </div>
+                                <span class="feature-text">Thermal<br>and acoustic<br>insulation</span>
                             </div>
 
-                            <div class="feature-icon-item">
-                                <div class="feature-icon">
+                            <div class="feature-card">
+                                <div class="icon-wrapper">
                                     <i class="fas fa-shield-alt"></i>
                                 </div>
-                                <div class="feature-label">
-                                    Strong<br>resistant door
-                                </div>
+                                <span class="feature-text">Strong<br>resistant door</span>
                             </div>
 
-                            <div class="feature-icon-item">
-                                <div class="feature-icon">
+                            <div class="feature-card">
+                                <div class="icon-wrapper">
                                     <span class="depth-number">25</span>
                                 </div>
-                                <div class="feature-label">
-                                    High safety lock<br>25mm depth
-                                </div>
+                                <span class="feature-text">High safety lock<br>25mm depth</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Main Product Image -->
-                    <div class="col-md-5 col-sm-12">
-                        <div class="product-image-main">
-                            <img src="{{ asset('storage/' . $product->main_image) }}"
-                                 alt="{{ $product->name }}"
-                                 class="img-fluid">
+                    <div class="col-lg-5 col-md-9 order-md-2">
+                        <div class="main-product-image">
+                            <div class="image-container">
+                                <img src="{{ asset('storage/' . $product->main_image) }}"
+                                     class="img-fluid"
+                                     alt="{{ $product->name }}"
+                                     loading="lazy">
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Product Info -->
-                    <div class="col-md-5 col-sm-12">
-                        <div class="product-info-container">
-                            <h1 class="product-model-title">
-                                {{ $product->model_number ?? 'SL 7050' }} – {{ $product->style_code ?? 'WINDOW ' . $product->id }}
-                            </h1>
+                    <!-- Product Details Column -->
+                    <div class="col-lg-5 order-md-3">
+                        <div class="product-details-card">
+                            <!-- Product Header -->
+                            <div class="product-header">
+                                <h1 class="product-title">
+                                    {{ $product->model_number ?? 'SL 7050' }} –
+                                    {{ $product->style_code ?? 'WINDOW ' . $product->id }}
+                                </h1>
+                            </div>
 
-                            <div class="product-description mt-4">
+                            <!-- Product Description -->
+                            <div class="product-description">
                                 {!! Purifier::clean($product->description) !!}
                             </div>
 
-
-                            <!-- Product Specifications -->
+                            <!-- Specifications Table -->
                             @if($product->specifications->count() > 0)
-                                <div class="product-specs mt-4">
-                                    <h3 class="specs-title">Specifications</h3>
-                                    <div class="specs-list">
+                                <div class="specs-table">
+                                    <h3 class="section-title">Technical Specifications</h3>
+                                    <div class="specs-grid">
                                         @foreach($product->specifications as $spec)
-                                            <div class="spec-item">
-                                                <span class="spec-label">{{ $spec->label }}:</span>
-                                                <span class="spec-value">{{ $spec->value }}</span>
+                                            <div class="spec-row">
+                                                <div class="spec-label">{{ $spec->label }}</div>
+                                                <div class="spec-value">{{ $spec->value }}</div>
                                             </div>
                                         @endforeach
                                     </div>
                                 </div>
                             @endif
 
-                            <!-- Product Features -->
+                            <!-- Features List -->
                             @if($product->features->count() > 0)
-                                <div class="product-features mt-4">
-                                    <h3 class="features-title">Features</h3>
-                                    <ul class="features-list">
+                                <div class="features-list">
+                                    <h3 class="section-title">Key Features</h3>
+                                    <ul class="features-grid">
                                         @foreach($product->features->flatMap->features as $feature)
-                                            <li>{{ $feature }}</li>
+                                            <li class="feature-item">
+                                                <i class="fas fa-check"></i>{{ $feature }}
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </div>
                             @endif
 
-                            <!-- Contact Button -->
-                            <div class="contact-section mt-5">
-                                <a href="{{ route('contact') }}" class="btn btn-primary btn-contact">
-                                    Contact for Inquiry
+                            <!-- CTA Section -->
+                            <div class="cta-sectionn">
+                                <a href="{{ route('contact') }}" class="inquiry-btn">
+                                    <i class="fas fa-file-alt me-2"></i>Request Detailed Specifications
                                 </a>
                             </div>
                         </div>
@@ -116,30 +115,30 @@
             </div>
 
             <!-- Similar Products Section -->
-            <div class="similar-products-section mt-5 pt-5">
-                <h2 class="section-title text-center mb-5">SIMILAR PRODUCTS</h2>
+            <div class="similar-products-section">
+                <div class="section-header">
+                    <h2>Related Products</h2>
+                    <p class="section-subtitle">Explore similar security solutions</p>
+                </div>
 
-                <div class="row">
-                    @if($product->relatedProducts->count() > 0)
-                        @foreach($product->relatedProducts as $relatedProduct)
-                            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                                <a href="{{ route('products.show', $relatedProduct->slug) }}" class="similar-product-item">
-                                    <div class="product-image">
-                                        <img src="{{ asset('storage/' . $relatedProduct->main_image) }}"
-                                             alt="{{ $relatedProduct->name }}"
-                                             class="img-fluid">
-                                    </div>
-                                    <div class="product-title text-center mt-3">
-                                        {{ $relatedProduct->model_number ?? 'SL 7050' }} – {{ $relatedProduct->style_code ?? 'WINDOW ' . $relatedProduct->id }}
-                                    </div>
-                                </a>
+                <div class="similar-products-grid">
+                    @foreach($product->relatedProducts as $relatedProduct)
+                        <a href="{{ route('products.show', $relatedProduct->slug) }}" class="product-card">
+                            <div class="card-image">
+                                <img src="{{ asset('storage/' . $relatedProduct->main_image) }}"
+                                     alt="{{ $relatedProduct->name }}"
+                                     class="img-fluid"
+                                     loading="lazy">
                             </div>
-                        @endforeach
-                    @else
-                        <div class="col-12 text-center">
-                            <p>No similar products found.</p>
-                        </div>
-                    @endif
+
+                            <div class="card-body">
+                                <h3 class="product-model">
+                                    {{ $relatedProduct->model_number ?? 'SL 7050' }}
+                                </h3>
+                                <p class="product-type">{{ $relatedProduct->style_code ?? 'WINDOW ' . $relatedProduct->id }}</p>
+                            </div>
+                        </a>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -148,245 +147,273 @@
 
 @push('styles')
     <style>
-        /* Page Container */
-        .page-product-detail {
-            padding: 60px 0;
-            background-color: #fff;
+        /* Base Styling */
+        .product-detail-page {
+            padding: 2.5rem 0;
+            background: #ffffff;
         }
 
-        /* Main Product Section */
-        .product-main-section {
-            margin-bottom: 60px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid #e1e1e1;
+        /* Feature Icons Sidebar */
+        .feature-icons-sidebar {
+            display: grid;
+            gap: 1rem;
         }
 
-        /* Feature Icons */
-        .feature-icons-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .feature-icon-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .feature-card {
+            padding: 1.25rem;
+            border: 1px solid #ececec;
+            border-radius: 8px;
             text-align: center;
+            transition: all 0.2s ease;
         }
 
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            border: 1px solid #e0e0e0;
+        .feature-card:hover {
+            border-color: #deaf33;
+        }
+
+        .icon-wrapper {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #ececec;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 10px;
-            background-color: #fff;
+            margin: 0 auto 0.75rem;
         }
 
-        .feature-icon i {
-            font-size: 32px;
+        .icon-wrapper i {
+            font-size: 1.4rem;
             color: #deaf33;
         }
 
         .depth-number {
-            font-size: 32px;
-            font-weight: bold;
+            font-size: 1.4rem;
+            font-weight: 600;
             color: #deaf33;
         }
 
-        .feature-label {
-            font-size: 12px;
+        .feature-text {
+            font-size: 0.85rem;
             line-height: 1.3;
-            color: #555;
+            color: #444444;
         }
 
         /* Main Product Image */
-        .product-image-main {
+        .main-product-image {
+            background: #ffffff;
+            border: 1px solid #ececec;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .image-container {
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #fff;
-            padding: 0;
-            height: auto;
-            min-height: 400px;
+            padding-top: 100%;
+            overflow: hidden;
+            border-radius: 4px;
         }
 
-        .product-image-main img {
-            max-width: 100%;
-            max-height: 600px;
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
-            display: block;
         }
 
-        /* Product Info */
-        .product-info-container {
-            padding: 20px 0;
+        /* Product Details Card */
+        .product-details-card {
+            padding: 1.5rem;
+            background: #ffffff;
+            border: 1px solid #ececec;
+            border-radius: 8px;
         }
 
-        .product-model-title {
-            font-size: 35px;
+        .product-title {
+            font-size: 1.5rem;
             font-weight: 600;
-            color: #1e1e1e;
-            margin-bottom: 30px;
+            color: #222222;
+            margin-bottom: 1.25rem;
         }
 
         .product-description {
-            font-size: 15px;
+            font-size: 0.95rem;
             line-height: 1.6;
-            color: #555;
+            color: #444444;
+            margin-bottom: 1.5rem;
         }
 
-        /* Specifications */
-        .specs-title, .features-title {
-            font-size: 18px;
+        /* Specifications Grid */
+        .section-title {
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 15px;
-            color: #1e1e1e;
+            color: #222222;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #deaf33;
         }
 
-        .specs-list {
-            border-top: 1px solid #eee;
+        .specs-grid {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
         }
 
-        .spec-item {
+        .spec-row {
             display: flex;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #f5f5f5;
         }
 
         .spec-label {
-            width: 40%;
-            font-weight: 500;
-            color: #555;
+            font-size: 0.9rem;
+            color: #666666;
         }
 
         .spec-value {
-            width: 60%;
-            color: #1e1e1e;
+            font-size: 0.9rem;
+            color: #222222;
+            font-weight: 500;
         }
 
         /* Features List */
-        .features-list {
-            padding-left: 20px;
+        .features-grid {
+            columns: 2;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
 
-        .features-list li {
-            margin-bottom: 8px;
-            color: #555;
+        .feature-item {
+            font-size: 0.9rem;
+            color: #444444;
+            margin-bottom: 0.5rem;
+            break-inside: avoid;
         }
 
-        /* Contact Button */
-        .btn-contact {
+        .feature-item i {
+            color: #deaf33;
+            margin-right: 0.5rem;
+        }
+
+        /* CTA Button */
+        .inquiry-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.8rem 1.75rem;
             background-color: #deaf33;
-            border: none;
-            padding: 12px 30px;
+            color: #222222;
+            border-radius: 6px;
             font-weight: 500;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            color: #1e1e1e;
+            transition: all 0.2s ease;
+            text-decoration: none;
         }
 
-        .btn-contact:hover {
-            background-color: #c79b23;
-            transform: translateY(-2px);
-            color: #1e1e1e;
+        .inquiry-btn:hover {
+            background-color: #c79b2b;
+            color: #222222;
         }
 
         /* Similar Products Section */
-        .section-title {
-            font-size: 30px;
-            font-weight: 600;
-            color: #1e1e1e;
-            position: relative;
+        .similar-products-section {
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid #ececec;
         }
 
-        .similar-product-item {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            transition: all 0.3s ease;
+        .section-header {
+            text-align: center;
+            margin-bottom: 2rem;
         }
 
-        .similar-product-item:hover {
-            transform: translateY(-5px);
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: #222222;
+            margin-bottom: 0.5rem;
         }
 
-        .similar-product-item .product-image {
-            position: relative;
-            border: 1px solid #eee;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 300px;
-            padding: 10px;
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: #666666;
+        }
+
+        .similar-products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            border: 1px solid #ececec;
+            border-radius: 8px;
             overflow: hidden;
+            transition: all 0.2s ease;
         }
 
-        .similar-product-item .product-image img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+        .product-card:hover {
+            border-color: #deaf33;
+            transform: translateY(-3px);
         }
 
-        .similar-product-item .product-title {
-            font-size: 15px;
-            color: #1e1e1e;
-            margin-top: 10px;
-            font-weight: 500;
+        .card-image {
+            padding: 1.5rem;
+            background: #f9f9f9;
+            text-align: center;
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 991px) {
-            .feature-icons-container {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                margin-bottom: 30px;
+        .card-body {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .product-model {
+            font-size: 1rem;
+            color: #222222;
+            margin-bottom: 0.25rem;
+        }
+
+        .product-type {
+            font-size: 0.85rem;
+            color: #666666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .feature-icons-sidebar {
+                grid-template-columns: repeat(3, 1fr);
             }
 
-            .feature-icon-item {
-                margin: 0 10px 20px;
-            }
-
-            .product-image-main {
-                margin-bottom: 30px;
-            }
-
-            .product-model-title {
-                font-size: 28px;
+            .product-title {
+                font-size: 1.3rem;
             }
         }
 
-        @media (max-width: 767px) {
-            .page-product-detail {
-                padding: 30px 0;
+        @media (max-width: 768px) {
+            .feature-icons-sidebar {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .feature-icon {
-                width: 60px;
-                height: 60px;
+            .features-grid {
+                columns: 1;
             }
 
-            .feature-icon i {
-                font-size: 24px;
-            }
-
-            .depth-number {
-                font-size: 24px;
-            }
-
-            .feature-label {
-                font-size: 10px;
-            }
-
-            .similar-product-item .product-image {
-                height: 220px;
+            .similar-products-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        @media (max-width: 576px) {
+            .product-detail-page {
+                padding: 1.5rem 0;
+            }
+
+            .similar-products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
     </style>
 @endpush

@@ -24,6 +24,7 @@ class Product extends Model
         'is_featured',
         'is_active',
         'is_taxable',
+        'is_door',
         'sort_order',
         'main_image',
         'meta_title',
@@ -39,6 +40,7 @@ class Product extends Model
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
         'is_taxable' => 'boolean',
+        'is_door' => 'boolean',
         'keywords' => 'array',
         'published_at' => 'datetime',
     ];

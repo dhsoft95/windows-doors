@@ -35,7 +35,7 @@
 
                         @if(request('category') && $categories->firstWhere('id', request('category'))->description)
                             <div class="category-description mb-3">
-                                {{ $categories->firstWhere('id', request('category'))->description }}
+                                {!! $categories->firstWhere('id', request('category'))->description !!}
                             </div>
                         @endif
 
@@ -68,9 +68,7 @@
                                         <a href="{{ route('products.show', $product->slug) }}" class="product-link">
                                             <div class="product-image">
                                                 <img src="{{ asset('storage/' . $product->main_image) }}"
-                                                     alt="{{ $product->name }}"
-                                                     class="img-fluid"
-                                                     loading="lazy">
+                                                     alt="{{ $product->name }}" >
                                             </div>
                                             <div class="product-title">
                                                 <h3>{{ $product->name }}</h3>
@@ -241,7 +239,7 @@
             background-color: #f9f9f9;
             position: relative;
             width: 100%;
-            padding-top: 192%; /* Creates a 1:1.92 aspect ratio (close to 244:468) */
+            padding-top: 100%;
             overflow: hidden;
             transition: all 0.3s ease;
         }
@@ -252,7 +250,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Uses cover to ensure images fill the space */
+            object-fit: contain;
             transition: all 0.5s ease;
         }
 
@@ -395,7 +393,6 @@
 
         .sort-options .form-select {
             width: 100%;
-        }
         }
     </style>
 @endpush

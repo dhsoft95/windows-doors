@@ -51,6 +51,7 @@ Route::get('/showroom', [SiteController::class, 'showroom'])->name('showroom');
 // Contact
 Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
 Route::post('/contact', [SiteController::class, 'contactStore'])->name('contact.store');
+Route::get('/products/doors-collection', [SiteController::class, 'doorsCollection'])->name('products.doors-collection');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');

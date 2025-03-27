@@ -30,11 +30,13 @@
                                         <span class="browse-label">Browse Category</span>
                                     </div>
                                 </div>
+
                                 <div class="category-info">
                                     <h3 class="category-title">{{ $category->name }}</h3>
                                     <p class="category-count">{{ $category->products_count }} Products</p>
+
                                     @if($category->description)
-                                        <div class="category-description">{{ $category->description }}</div>
+                                        <div class="category-description">{!! $category->description !!}</div>
                                     @endif
                                 </div>
                             </a>

@@ -86,6 +86,27 @@ class ProductResource extends Resource
                                     ->maxLength(255)
                                     ->unique(ignoreRecord: true)
                                     ->helperText('Used for the product URL. Auto-generated from name.'),
+                                Forms\Components\Toggle::make('is_door')
+                                    ->label('Simba Door Product')
+                                    ->helperText('Mark this product as part of the Simba Doors Collection')
+                                    ->default(false)
+                                    ->reactive()
+                                    ->afterStateUpdated(function (callable $set, $state, Forms\Get $get) {
+                                        if ($state) {
+                                            $set('is_featured', true);
+
+                                            // Get the Simba doors category ID dynamically
+                                            $doorCategoryId =ProductCategory::where('slug', 'simba-doors-collections')
+                                                ->first()?->id;
+
+                                            if ($doorCategoryId) {
+                                                $set('product_category_id', $doorCategoryId);
+                                            }
+                                        }
+                                    })
+                                    ->hint('Simba Doors require specific measurements and installation details')
+
+                                    ->columnSpanFull(),
 
                                 Forms\Components\Textarea::make('short_description')
                                     ->maxLength(255)
@@ -191,7 +212,6 @@ class ProductResource extends Resource
                                     ->reorderableWithButtons()
                                     ->columnSpanFull(),
                             ]),
-
 
                         Forms\Components\Section::make('Related Products')
                             ->description('Suggest additional products to customers')
@@ -370,81 +390,81 @@ class ProductResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                Tables\Filters\SelectFilter::make('product_category_id')
-                    ->label('Category')
-                    ->relationship('category', 'name')
-                    ->multiple()
-                    ->searchable()
-                    ->preload(),
-
-                Tables\Filters\TernaryFilter::make('is_featured')
-                    ->label('Featured')
-                    ->indicator('Featured Products'),
-
-                Tables\Filters\TernaryFilter::make('is_active')
-                    ->label('Active')
-                    ->trueLabel('Active Products')
-                    ->falseLabel('Inactive Products')
-                    ->indicator('Status'),
-
-                Tables\Filters\TernaryFilter::make('is_in_stock')
-                    ->label('Stock Status')
-                    ->trueLabel('In Stock')
-                    ->falseLabel('Out of Stock')
-                    ->indicator('Stock'),
-
-                Filter::make('on_sale')
-                    ->label('On Sale')
-                    ->query(function (Builder $query): Builder {
-                        return $query
-                            ->whereNotNull('sale_price')
-                            ->where('sale_price', '>', 0)
-                            ->where('sale_price', '<', new \Illuminate\Database\Query\Expression('price'));
-                    })
-                    ->indicator('On Sale'),
-
-                Filter::make('price_range')
-                    ->form([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('min_price')
-                                    ->label('Min Price')
-                                    ->numeric()
-                                    ->placeholder('0'),
-                                Forms\Components\TextInput::make('max_price')
-                                    ->label('Max Price')
-                                    ->numeric()
-                                    ->placeholder('999999'),
-                            ]),
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                $data['min_price'] ?? null,
-                                fn (Builder $query, $price) => $query->where('price', '>=', $price)
-                            )
-                            ->when(
-                                $data['max_price'] ?? null,
-                                fn (Builder $query, $price) => $query->where('price', '<=', $price)
-                            );
-                    })
-                    ->indicateUsing(function (array $data): array {
-                        $indicators = [];
-
-                        if ($data['min_price'] ?? null) {
-                            $indicators[] = Indicator::make('Min Price: $' . number_format($data['min_price'], 2))
-                                ->removeField('min_price');
-                        }
-
-                        if ($data['max_price'] ?? null) {
-                            $indicators[] = Indicator::make('Max Price: $' . number_format($data['max_price'], 2))
-                                ->removeField('max_price');
-                        }
-
-                        return $indicators;
-                    })
-            ], layout: FiltersLayout::AboveContent)
+//            ->filters([
+//                Tables\Filters\SelectFilter::make('product_category_id')
+//                    ->label('Category')
+//                    ->relationship('category', 'name')
+//                    ->multiple()
+//                    ->searchable()
+//                    ->preload(),
+//
+//                Tables\Filters\TernaryFilter::make('is_featured')
+//                    ->label('Featured')
+//                    ->indicator('Featured Products'),
+//
+//                Tables\Filters\TernaryFilter::make('is_active')
+//                    ->label('Active')
+//                    ->trueLabel('Active Products')
+//                    ->falseLabel('Inactive Products')
+//                    ->indicator('Status'),
+//
+//                Tables\Filters\TernaryFilter::make('is_in_stock')
+//                    ->label('Stock Status')
+//                    ->trueLabel('In Stock')
+//                    ->falseLabel('Out of Stock')
+//                    ->indicator('Stock'),
+//
+//                Filter::make('on_sale')
+//                    ->label('On Sale')
+//                    ->query(function (Builder $query): Builder {
+//                        return $query
+//                            ->whereNotNull('sale_price')
+//                            ->where('sale_price', '>', 0)
+//                            ->where('sale_price', '<', new \Illuminate\Database\Query\Expression('price'));
+//                    })
+//                    ->indicator('On Sale'),
+//
+//                Filter::make('price_range')
+//                    ->form([
+//                        Forms\Components\Grid::make(2)
+//                            ->schema([
+//                                Forms\Components\TextInput::make('min_price')
+//                                    ->label('Min Price')
+//                                    ->numeric()
+//                                    ->placeholder('0'),
+//                                Forms\Components\TextInput::make('max_price')
+//                                    ->label('Max Price')
+//                                    ->numeric()
+//                                    ->placeholder('999999'),
+//                            ]),
+//                    ])
+//                    ->query(function (Builder $query, array $data): Builder {
+//                        return $query
+//                            ->when(
+//                                $data['min_price'] ?? null,
+//                                fn (Builder $query, $price) => $query->where('price', '>=', $price)
+//                            )
+//                            ->when(
+//                                $data['max_price'] ?? null,
+//                                fn (Builder $query, $price) => $query->where('price', '<=', $price)
+//                            );
+//                    })
+//                    ->indicateUsing(function (array $data): array {
+//                        $indicators = [];
+//
+//                        if ($data['min_price'] ?? null) {
+//                            $indicators[] = Indicator::make('Min Price: $' . number_format($data['min_price'], 2))
+//                                ->removeField('min_price');
+//                        }
+//
+//                        if ($data['max_price'] ?? null) {
+//                            $indicators[] = Indicator::make('Max Price: $' . number_format($data['max_price'], 2))
+//                                ->removeField('max_price');
+//                        }
+//
+//                        return $indicators;
+//                    })
+//            ], layout: FiltersLayout::AboveContent)
             ->actions([
                 Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),

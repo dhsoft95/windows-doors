@@ -18,8 +18,8 @@
                     <div class="sidebar-container">
                         <!-- Category Image with Text Overlay -->
                         <div class="category-featured-image mb-4">
-                            <img src="{{ asset('images/categories/' . $category->image) }}"
-                                 alt="{{ $category->name }}"
+{{--                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="category-image">--}}
+                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
                                  class="img-fluid rounded">
                             <div class="category-overlay">
                                 <h1 class="category-title">{{ $category->name }}</h1>
@@ -190,7 +190,7 @@
                             <div class="col-md-8">
                                 <h1 class="category-name mb-2">{{ $category->name }}</h1>
                                 <div class="category-description">
-                                    {!! nl2br(e($category->description)) !!}
+                                    {!! $category->description !!}
                                 </div>
                             </div>
 

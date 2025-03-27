@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query()->where('is_active', true);
+        $query = Product::query()->where('is_active', true );
 
         // Category Filter
         if ($request->has('category')) {
@@ -27,7 +27,7 @@ class ProductController extends Controller
                 $query->orderBy('price', 'desc');
                 break;
             default:
-                $query->orderBy('created_at', 'desc'); // Fetch from new to old
+                $query->orderBy('created_at', 'desc');
         }
 
         // Pagination
@@ -41,7 +41,6 @@ class ProductController extends Controller
             'categories' => $categories
         ]);
     }
-
 
     public function show($slug)
     {
