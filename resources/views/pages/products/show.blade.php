@@ -64,8 +64,8 @@
                             <!-- Product Header -->
                             <div class="product-header">
                                 <h1 class="product-title">
-                                    {{ $product->model_number ?? 'SL 7050' }} –
-                                    {{ $product->style_code ?? 'WINDOW ' . $product->id }}
+                                    {{ $product->name}}
+{{--                                    {{ $product->style_code ?? 'WINDOW ' . $product->id }}--}}
                                 </h1>
                             </div>
 

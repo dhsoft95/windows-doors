@@ -8,6 +8,9 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">Categories</a></li>
+                    @if(!$isParentCategory && $category->parent)
+                        <li class="breadcrumb-item"><a href="{{ route('categories.show', $category->parent->slug) }}">{{ $category->parent->name }}</a></li>
+                    @endif
                     <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
                 </ol>
             </nav>
@@ -18,8 +21,8 @@
                     <div class="sidebar-container">
                         <!-- Category Image with Text Overlay -->
                         <div class="category-featured-image mb-4">
-{{--                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="category-image">--}}
-                            <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
+                            <img src="{{ $category->image ? asset('storage/' . $category->image) : asset('images/placeholder.jpg') }}"
+                                 alt="{{ $category->name }}"
                                  class="img-fluid rounded">
                             <div class="category-overlay">
                                 <h1 class="category-title">{{ $category->name }}</h1>
@@ -37,24 +40,54 @@
                         </button>
 
                         <div class="collapse d-lg-block" id="sidebarFilters">
-                            <!-- Browse Categories -->
+                            <!-- Browse Parent Categories -->
                             <div class="sidebar-card mb-4">
                                 <div class="sidebar-card-header">
                                     <h2 class="sidebar-title">
                                         <i class="fa-solid fa-folder-open text-primary me-2"></i>
-                                        Browse Categories
+                                        Categories
                                     </h2>
                                 </div>
                                 <div class="sidebar-card-body">
                                     <ul class="category-nav">
-                                        @foreach($categories as $cat)
-                                            <li class="{{ $cat->id == $category->id ? 'active' : '' }}">
-                                                <a href="{{ route('categories.show', $cat->slug) }}" class="d-flex justify-content-between align-items-center">
-                                                    <span>{{ $cat->name }}</span>
-                                                    @if($cat->id == $category->id)
-                                                        <i class="fas fa-circle-check text-primary"></i>
+                                        @foreach($parentCategories as $parentCat)
+                                            <li class="{{ ($isParentCategory && $parentCat->id == $category->id) || (!$isParentCategory && $category->parent_id == $parentCat->id) ? 'active parent-category' : 'parent-category' }}">
+                                                <a href="{{ route('categories.show', $parentCat->slug) }}"
+                                                   class="d-flex justify-content-between align-items-center parent-link"
+                                                   data-has-children="{{ $parentCat->subcategories_count > 0 ? 'true' : 'false' }}">
+                                                    <span>{{ $parentCat->name }}</span>
+                                                    @if($parentCat->subcategories_count > 0)
+                                                        <i class="fas {{ ($isParentCategory && $parentCat->id == $category->id) || (!$isParentCategory && $category->parent_id == $parentCat->id) ? 'fa-chevron-down' : 'fa-chevron-right' }}"></i>
                                                     @endif
                                                 </a>
+
+                                                <!-- Subcategories for this parent -->
+                                                @if(($isParentCategory && $parentCat->id == $category->id) || (!$isParentCategory && $category->parent_id == $parentCat->id))
+                                                    <ul class="subcategory-nav">
+                                                        @if($isParentCategory && $parentCat->id == $category->id)
+                                                            @foreach($subcategories as $subCat)
+                                                                <li>
+                                                                    <a href="{{ route('categories.show', $subCat->slug) }}" class="subcategory-link">
+                                                                        <i class="fas fa-angle-right me-2"></i> {{ $subCat->name }}
+                                                                    </a>
+                                                                </li>
+                                                            @endforeach
+                                                        @elseif(!$isParentCategory && $category->parent_id == $parentCat->id)
+                                                            <li class="active">
+                                                                <a href="{{ route('categories.show', $category->slug) }}" class="subcategory-link">
+                                                                    <i class="fas fa-angle-right me-2"></i> {{ $category->name }}
+                                                                </a>
+                                                            </li>
+                                                            @foreach($siblingCategories as $siblingCat)
+                                                                <li>
+                                                                    <a href="{{ route('categories.show', $siblingCat->slug) }}" class="subcategory-link">
+                                                                        <i class="fas fa-angle-right me-2"></i> {{ $siblingCat->name }}
+                                                                    </a>
+                                                                </li>
+                                                            @endforeach
+                                                        @endif
+                                                    </ul>
+                                                @endif
                                             </li>
                                         @endforeach
                                     </ul>
@@ -92,45 +125,6 @@
                                 </div>
                             </div>
 
-                            <!-- Price Range Filter -->
-{{--                            <div class="sidebar-card mb-4">--}}
-{{--                                <div class="sidebar-card-header">--}}
-{{--                                    <h2 class="sidebar-title">--}}
-{{--                                        <i class="fa-solid fa-tags text-primary me-2"></i>--}}
-{{--                                        Price Range--}}
-{{--                                    </h2>--}}
-{{--                                </div>--}}
-{{--                                <div class="sidebar-card-body">--}}
-{{--                                    <form action="{{ route('categories.show', $category->slug) }}" method="GET" class="filter-form">--}}
-{{--                                        <!-- Preserve other query params -->--}}
-{{--                                        @if(request()->has('sort'))--}}
-{{--                                            <input type="hidden" name="sort" value="{{ request('sort') }}">--}}
-{{--                                        @endif--}}
-
-{{--                                        <div class="price-range mb-3">--}}
-{{--                                            <div class="d-flex justify-content-between mb-2">--}}
-{{--                                                <span>Min: $<span id="minPriceValue">{{ request('price_min', 0) }}</span></span>--}}
-{{--                                                <span>Max: $<span id="maxPriceValue">{{ request('price_max', 50000) }}</span></span>--}}
-{{--                                            </div>--}}
-{{--                                            <div id="price-slider" class="mb-3"></div>--}}
-{{--                                            <input type="hidden" name="price_min" id="price_min" value="{{ request('price_min', 0) }}">--}}
-{{--                                            <input type="hidden" name="price_max" id="price_max" value="{{ request('price_max', 50000) }}">--}}
-{{--                                        </div>--}}
-
-{{--                                        <div class="form-check mb-3">--}}
-{{--                                            <input class="form-check-input" type="checkbox" value="1" id="in_stock" name="in_stock" {{ request('in_stock') ? 'checked' : '' }}>--}}
-{{--                                            <label class="form-check-label" for="in_stock">--}}
-{{--                                                In Stock Only--}}
-{{--                                            </label>--}}
-{{--                                        </div>--}}
-
-{{--                                        <button type="submit" class="btn btn-primary w-100">--}}
-{{--                                            Apply Filters--}}
-{{--                                        </button>--}}
-{{--                                    </form>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
                             <!-- Active Filters -->
                             @if(request()->anyFilled(['sort', 'price_min', 'price_max', 'in_stock']))
                                 <div class="sidebar-card mb-4">
@@ -146,24 +140,6 @@
                                                 <div class="filter-tag">
                                                     Sort: {{ ucfirst(str_replace(['_asc', '_desc'], [': Low to High', ': High to Low'], request('sort'))) }}
                                                     <a href="{{ route('categories.show', $category->slug, array_merge(request()->except('sort'), ['page' => 1])) }}" class="filter-remove" aria-label="Remove sort filter">
-                                                        <i class="fas fa-times"></i>
-                                                    </a>
-                                                </div>
-                                            @endif
-
-                                            @if(request()->filled('price_min') || request()->filled('price_max'))
-                                                <div class="filter-tag">
-                                                    Price: ${{ request('price_min', 0) }} - ${{ request('price_max', 50000) }}
-                                                    <a href="{{ route('categories.show', $category->slug, array_merge(request()->except(['price_min', 'price_max']), ['page' => 1])) }}" class="filter-remove" aria-label="Remove price filter">
-                                                        <i class="fas fa-times"></i>
-                                                    </a>
-                                                </div>
-                                            @endif
-
-                                            @if(request()->filled('in_stock'))
-                                                <div class="filter-tag">
-                                                    In Stock Only
-                                                    <a href="{{ route('categories.show', $category->slug, array_merge(request()->except('in_stock'), ['page' => 1])) }}" class="filter-remove" aria-label="Remove in stock filter">
                                                         <i class="fas fa-times"></i>
                                                     </a>
                                                 </div>
@@ -215,6 +191,31 @@
                         </div>
                     </div>
 
+                    <!-- Subcategories Display (for parent categories) -->
+                    @if($isParentCategory && $subcategories->count() > 0)
+                        <div class="subcategories-grid mb-5">
+                            <h2 class="section-title mb-4">Browse {{ $category->name }} By Category</h2>
+                            <div class="row g-4">
+                                @foreach($subcategories as $subCat)
+                                    <div class="col-6 col-md-4 col-lg-3">
+                                        <a href="{{ route('categories.show', $subCat->slug) }}" class="subcategory-card">
+                                            <div class="subcategory-image">
+                                                @if($subCat->image)
+                                                    <img src="{{ asset('storage/' . $subCat->image) }}" alt="{{ $subCat->name }}">
+                                                @else
+                                                    <div class="subcategory-icon">
+                                                        <i class="fas fa-folder"></i>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="subcategory-name">{{ $subCat->name }}</div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Products Grid -->
                     <div class="products-grid" id="products-container">
                         @if($products->count() > 0)
@@ -253,6 +254,10 @@
                                                     @if($product->is_featured)
                                                         <span class="badge badge-featured">Featured</span>
                                                     @endif
+
+                                                    @if($product->is_on_sale)
+                                                        <span class="badge badge-sale">Sale</span>
+                                                    @endif
                                                 </div>
                                             </div>
 
@@ -264,6 +269,11 @@
                                                     </a>
                                                 </h2>
 
+                                                <div class="product-category">
+                                                    <a href="{{ route('categories.show', $product->category->slug) }}" class="text-muted">
+                                                        {{ $product->category->name }}
+                                                    </a>
+                                                </div>
                                                 <!-- Product Actions -->
                                                 <div class="product-buttons">
                                                     <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary">
@@ -475,6 +485,113 @@
             font-weight: 600;
         }
 
+        /* Parent and subcategory styles */
+        .parent-category > a {
+            font-weight: 500;
+        }
+
+        .subcategory-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: var(--background-light);
+            border-top: 1px solid var(--border-color);
+            display: block;
+        }
+
+        .subcategory-nav li a {
+            padding-left: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .subcategory-nav li.active a {
+            color: var(--primary);
+            font-weight: 600;
+            background-color: rgba(222, 175, 51, 0.1);
+        }
+
+        .subcategory-link:hover {
+            background-color: rgba(222, 175, 51, 0.05);
+        }
+
+        /* Subcategories Grid */
+        .subcategories-grid {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .subcategory-card {
+            display: block;
+            text-decoration: none;
+            background-color: var(--surface);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .subcategory-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .subcategory-image {
+            position: relative;
+            padding-top: 75%;
+            background-color: var(--background-light);
+            overflow: hidden;
+        }
+
+        .subcategory-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .subcategory-card:hover .subcategory-image img {
+            transform: scale(1.1);
+        }
+
+        .subcategory-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--text-light);
+        }
+
+        .subcategory-name {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 500;
+            color: var(--text-dark);
+            border-top: 1px solid var(--border-color);
+            transition: color 0.2s ease;
+        }
+
+        .subcategory-card:hover .subcategory-name {
+            color: var(--primary);
+        }
+
         /* Form Controls */
         .form-select {
             height: 42px;
@@ -488,36 +605,6 @@
         .form-select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 0.2rem rgba(222, 175, 51, 0.25);
-        }
-
-        /* Price Range Slider */
-        .price-range {
-            padding: 0.5rem 0;
-        }
-
-        #price-slider {
-            height: 6px;
-            background-color: #e0e0e0;
-            border-radius: 3px;
-            position: relative;
-        }
-
-        #price-slider .ui-slider-range {
-            height: 100%;
-            background-color: var(--primary);
-            position: absolute;
-        }
-
-        #price-slider .ui-slider-handle {
-            width: 16px;
-            height: 16px;
-            background-color: var(--surface);
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            top: -5px;
-            margin-left: -8px;
-            cursor: pointer;
-            position: absolute;
         }
 
         /* Active Filters */
@@ -682,6 +769,11 @@
             color: white;
         }
 
+        .badge-sale {
+            background-color: #ff6b6b;
+            color: white;
+        }
+
         /* Product Info */
         .product-info {
             padding: 1.25rem;
@@ -710,6 +802,22 @@
             color: var(--primary);
         }
 
+        .product-category {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-category a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .product-category a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
         /* Product Price */
         .product-price {
             margin-bottom: 1rem;
@@ -734,32 +842,6 @@
             color: var(--primary);
             font-size: 1.2rem;
             font-weight: 700;
-        }
-
-        /* Stock Status */
-        .product-stock {
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .in-stock {
-            color: #4caf50;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .out-of-stock {
-            color: #f44336;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .product-stock .quantity {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            margin-left: 3px;
         }
 
         /* Product Buttons */
@@ -843,70 +925,6 @@
         .no-products p {
             color: var(--text-light);
             margin-bottom: 1.5rem;
-        }
-
-        /* Quick View Modal */
-        #quickViewModal .modal-content {
-            border: none;
-            border-radius: var(--radius-md);
-            overflow: hidden;
-        }
-
-        .quick-view-loading {
-            padding: 3rem;
-            text-align: center;
-        }
-
-        /* List View */
-        #products-container.list-view .row {
-            margin-bottom: 0;
-        }
-
-        #products-container.list-view .product-item {
-            width: 100%;
-            max-width: 100%;
-            flex: 0 0 100%;
-        }
-
-        #products-container.list-view .product-card {
-            display: flex;
-            flex-direction: row;
-        }
-
-        #products-container.list-view .product-image-container {
-            flex: 0 0 200px;
-            max-width: 200px;
-            padding-top: 0;
-            height: 200px;
-        }
-
-        #products-container.list-view .product-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #products-container.list-view .product-title {
-            height: auto;
-            -webkit-line-clamp: 1;
-        }
-
-        #products-container.list-view .product-buttons {
-            margin-top: auto;
-        }
-
-        /* Pagination */
-        .pagination-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .pagination {
-            --bs-pagination-color: var(--text-body);
-            --bs-pagination-hover-color: var(--primary);
-            --bs-pagination-active-bg: var(--primary);
-            --bs-pagination-active-border-color: var(--primary);
         }
 
         /* Assistance Panel */
@@ -1045,17 +1063,11 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Price Slider
-            initPriceSlider();
-
             // Initialize View Switcher
             initViewSwitcher();
 
             // Initialize Quick View
             initQuickView();
-
-            // Initialize Add to Cart
-            initAddToCart();
 
             // Initialize Wishlist
             initWishlist();
@@ -1063,30 +1075,8 @@
             // Initialize Assistance Panel
             initAssistancePanel();
 
-            /**
-             * Initialize Price Range Slider
-             */
-            function initPriceSlider() {
-                if ($('#price-slider').length) {
-                    // Get min and max values
-                    const minPrice = parseInt($('#price_min').val() || 0);
-                    const maxPrice = parseInt($('#price_max').val() || 50000);
-
-                    // Initialize jQuery UI Slider
-                    $('#price-slider').slider({
-                        range: true,
-                        min: 0,
-                        max: 50000,
-                        values: [minPrice, maxPrice],
-                        slide: function(event, ui) {
-                            $('#minPriceValue').text(ui.values[0]);
-                            $('#maxPriceValue').text(ui.values[1]);
-                            $('#price_min').val(ui.values[0]);
-                            $('#price_max').val(ui.values[1]);
-                        }
-                    });
-                }
-            }
+            // Initialize Category Navigation
+            initCategoryNavigation();
 
             /**
              * Initialize View Switcher (Grid/List)
@@ -1122,6 +1112,54 @@
                         localStorage.setItem('viewMode', 'list');
                     });
                 }
+            }
+
+            /**
+             * Initialize Category Navigation
+             */
+            function initCategoryNavigation() {
+                // Handle parent category clicks to show/hide subcategories
+                const parentLinks = document.querySelectorAll('.parent-link[data-has-children="true"]');
+
+                parentLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        // Only prevent default if the parent is not already active
+                        if (!this.closest('li').classList.contains('active')) {
+                            e.preventDefault();
+
+                            // Toggle chevron icon
+                            const icon = this.querySelector('i.fas');
+                            if (icon.classList.contains('fa-chevron-right')) {
+                                icon.classList.remove('fa-chevron-right');
+                                icon.classList.add('fa-chevron-down');
+                            } else {
+                                icon.classList.remove('fa-chevron-down');
+                                icon.classList.add('fa-chevron-right');
+                            }
+
+                            // Create or show subcategory list
+                            const parentLi = this.closest('li');
+
+                            // Get parent category ID
+                            const parentId = this.getAttribute('href').split('/').pop();
+
+                            // Check if subcategory list already exists
+                            let subcatList = parentLi.querySelector('.subcategory-nav');
+
+                            if (subcatList) {
+                                // Toggle visibility
+                                if (subcatList.style.display === 'none') {
+                                    subcatList.style.display = 'block';
+                                } else {
+                                    subcatList.style.display = 'none';
+                                }
+                            } else {
+                                // If no existing list, redirect to the category page
+                                window.location.href = this.getAttribute('href');
+                            }
+                        }
+                    });
+                });
             }
 
             /**
@@ -1211,38 +1249,6 @@
                         }
                     }
                 }
-            }
-
-            /**
-             * Initialize Add to Cart Functionality
-             */
-            function initAddToCart() {
-                const addToCartBtns = document.querySelectorAll('.btn-cart');
-
-                addToCartBtns.forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const productId = this.getAttribute('data-product-id');
-
-                        // Animation feedback
-                        const originalIcon = this.innerHTML;
-                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        this.disabled = true;
-
-                        // Simulate API call (in real app, replace with actual fetch)
-                        setTimeout(() => {
-                            this.innerHTML = '<i class="fas fa-check"></i>';
-
-                            // Show toast notification
-                            showToast('Product added to cart successfully', 'success');
-
-                            // Reset button after a delay
-                            setTimeout(() => {
-                                this.innerHTML = originalIcon;
-                                this.disabled = false;
-                            }, 1000);
-                        }, 800);
-                    });
-                });
             }
 
             /**

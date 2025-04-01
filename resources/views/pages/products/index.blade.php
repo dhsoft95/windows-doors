@@ -71,8 +71,8 @@
                                                      alt="{{ $product->name }}" >
                                             </div>
                                             <div class="product-title">
-                                                <h3>{{ $product->name }}</h3>
-                                                <div class="product-model">{{ $product->model_number ?? 'SL 7050' }} – {{ $product->style_code ?? 'WINDOW ' . rand(10, 50) }}</div>
+                                                <h3  class="product-model">{{ $product->name }}</h3>
+{{--                                                <div class="product-model">{{ $product->model_number ?? 'SL 7050' }} – {{ $product->style_code ?? 'WINDOW ' . rand(10, 50) }}</div>--}}
                                             </div>
                                         </a>
                                     </div>

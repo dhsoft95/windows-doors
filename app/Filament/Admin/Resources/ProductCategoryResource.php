@@ -24,8 +24,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Enums\FiltersLayout;
-
-
+use App\Filament\Admin\Resources\ProductCategoryResource\RelationManagers\SubcategoriesRelationManager;
 
 class ProductCategoryResource extends Resource
 {
@@ -59,6 +58,14 @@ class ProductCategoryResource extends Resource
                             ->description('Enter the essential category details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
+                                Forms\Components\Select::make('parent_id')
+                                    ->label('Parent Category')
+                                    ->relationship('parent', 'name')
+                                    ->preload()
+                                    ->searchable()
+                                    ->nullable()
+                                    ->helperText('Leave empty to create a top-level category'),
+
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255)
@@ -182,7 +189,7 @@ class ProductCategoryResource extends Resource
     {
         return $infolist
             ->schema([
-                 Section::make('Category Details')
+                Section::make('Category Details')
                     ->schema([
                         TextEntry::make('name')
                             ->size(TextEntrySize::Large)
@@ -190,6 +197,10 @@ class ProductCategoryResource extends Resource
 
                         TextEntry::make('slug')
                             ->label('URL Slug'),
+
+                        TextEntry::make('parent.name')
+                            ->label('Parent Category')
+                            ->visible(fn ($record) => $record->isSubcategory()),
 
                         ImageEntry::make('image')
                             ->width(800)
@@ -202,7 +213,7 @@ class ProductCategoryResource extends Resource
 
                 Grid::make(2)
                     ->schema([
-                         Section::make('Status')
+                        Section::make('Status')
                             ->schema([
                                 IconEntry::make('is_active')
                                     ->label('Active')
@@ -218,9 +229,9 @@ class ProductCategoryResource extends Resource
                                     ->label('Sort Order'),
                             ]),
 
-                     Section::make('Display Settings')
+                        Section::make('Display Settings')
                             ->schema([
-                               TextEntry::make('display_mode')
+                                TextEntry::make('display_mode')
                                     ->badge()
                                     ->formatStateUsing(fn (string $state): string => match($state) {
                                         'products' => 'Products Only',
@@ -229,18 +240,27 @@ class ProductCategoryResource extends Resource
                                         default => $state,
                                     }),
 
-                             TextEntry::make('products_per_page')
+                                TextEntry::make('products_per_page')
                                     ->formatStateUsing(fn ($state): string => $state . ' products per page'),
                             ]),
                     ]),
 
-                 Section::make('Products in this Category')
+                Section::make('Category Statistics')
                     ->schema([
-                      TextEntry::make('products_count')
-                            ->state(fn (ProductCategory $record): int => $record->products()->count())
-                            ->label('Total Products'),
+                        TextEntry::make('subcategories_count')
+                            ->state(fn (ProductCategory $record): int => $record->subcategories()->count())
+                            ->label('Subcategories'),
 
-                     TextEntry::make('active_products_count')
+                        TextEntry::make('products_count')
+                            ->state(fn (ProductCategory $record): int => $record->products()->count())
+                            ->label('Direct Products'),
+
+                        TextEntry::make('all_products_count')
+                            ->state(fn (ProductCategory $record): int => $record->getAllProducts()->count())
+                            ->label('Total Products (Including Subcategories)')
+                            ->columnSpanFull(),
+
+                        TextEntry::make('active_products_count')
                             ->state(fn (ProductCategory $record): int => $record->products()->where('is_active', true)->count())
                             ->label('Active Products'),
                     ])
@@ -269,6 +289,19 @@ class ProductCategoryResource extends Resource
                         }
                         return $state;
                     }),
+
+                Tables\Columns\TextColumn::make('parent.name')
+                    ->label('Parent Category')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                Tables\Columns\TextColumn::make('subcategories_count')
+                    ->counts('subcategories')
+                    ->label('Subcategories')
+                    ->badge()
+                    ->color('info')
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('products_count')
                     ->counts('products')
@@ -308,6 +341,21 @@ class ProductCategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('parent_id')
+                    ->label('Category Level')
+                    ->options([
+                        '' => 'All Categories',
+                        'root' => 'Top-Level Categories Only',
+                        'sub' => 'Subcategories Only',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when($data['value'] === 'root', function (Builder $query) {
+                            return $query->whereNull('parent_id');
+                        })->when($data['value'] === 'sub', function (Builder $query) {
+                            return $query->whereNotNull('parent_id');
+                        });
+                    }),
+
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Active')
                     ->trueLabel('Active Categories')
@@ -327,6 +375,11 @@ class ProductCategoryResource extends Resource
                             if ($record->products()->count() > 0) {
                                 $action->cancel();
                                 $action->failureNotification()?->title('Cannot delete category with products');
+                            }
+
+                            if ($record->subcategories()->count() > 0) {
+                                $action->cancel();
+                                $action->failureNotification()?->title('Cannot delete category with subcategories');
                             }
                         }),
                     Tables\Actions\Action::make('duplicate')
@@ -349,7 +402,7 @@ class ProductCategoryResource extends Resource
 
                             // Replicate with specific attributes, excluding system-generated or auto-calculated fields
                             $duplicate = $record->replicate([
-                                'products_count',  // Explicitly exclude this field
+                                'products_count',
                                 'created_at',
                                 'updated_at'
                             ]);
@@ -360,6 +413,13 @@ class ProductCategoryResource extends Resource
 
                             return $duplicate;
                         }),
+                    Tables\Actions\Action::make('addSubcategory')
+                        ->label('Add Subcategory')
+                        ->icon('heroicon-o-plus-circle')
+                        ->color('success')
+                        ->url(fn (ProductCategory $record) =>
+                            ProductCategoryResource::getUrl('create') . '?parent_id=' . $record->id)
+                        ->openUrlInNewTab(),
                     Tables\Actions\Action::make('toggleFeatured')
                         ->label(fn (ProductCategory $record): string => $record->is_featured ? 'Unfeature' : 'Feature')
                         ->icon('heroicon-o-star')
@@ -394,14 +454,15 @@ class ProductCategoryResource extends Resource
                 ]),
             ])
             ->defaultSort('sort_order')
-            ->persistSortInSession();
+            ->persistSortInSession()
+            ->modifyQueryUsing(fn (Builder $query) => $query->withCount(['products', 'subcategories']));
     }
-
 
     public static function getRelations(): array
     {
         return [
             ProductsRelationManager::class,
+            SubcategoriesRelationManager::class,
         ];
     }
 
